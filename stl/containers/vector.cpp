@@ -39,11 +39,11 @@ int main() {
   // construct a new vector
 
   std::vector<int> vec1{1, 2, 3,
-                        4, 5, 6}; // create a vector using initilizer_list
+                        4, 5, 6}; // create a vector using initializer_list
   std::vector<int> vec2(vec1.begin() + 3, vec1.end());
   std::vector<int> vec3(10);    // create 10 elements holding 0
   std::vector<int> vec4{100};    // create 1 element holding 100
-  std::vector<int> vec5(10, 3); // create 100 elements hodling 3
+  std::vector<int> vec5(10, 3); // create 100 elements holding 3
 
   std::vector<int> deepCopyVec(vec1); // Deep copy from vec1
 

@@ -22,7 +22,7 @@ int main()
         }
     }
 
-    // find_if only postive numbers
+    // find_if only positive numbers
     const auto isEven = [](auto i){ return i%2 == 0;};
 
     if (auto it = std::find_if(v.begin(), v.end(), isEven); it != v.end())

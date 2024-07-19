@@ -8,7 +8,7 @@
  * Iterators are used to point at the memory address of stl containers
  * Iterators Operations c++17
  * 
- * Adavance
+ * Advance
  * 
  * distance
  * 

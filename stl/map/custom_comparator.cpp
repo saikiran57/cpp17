@@ -1,5 +1,5 @@
 /**
- * @file custom_comparitor.cpp
+ * @file custom_comparator.cpp
  * @author Saikiran Nadipilli
  * @brief
  * @version 0.1
@@ -48,7 +48,7 @@ private:
   std::string m_Name;
 };
 
-struct CustomComparitor {
+struct CustomComparator {
   using is_transparent = void; // for example with void,
                                // but could be int or struct CanSearchOnId;
   bool operator()(Employee const &employee1, Employee const &employee2) const {
@@ -62,15 +62,15 @@ struct CustomComparitor {
   }
 };
 
-void transaparentContainer() {
+void transparentContainer() {
   Employee e;
-  std::map<Employee, int, CustomComparitor> m;
+  std::map<Employee, int, CustomComparator> m;
 
   m.emplace(Employee{1, "abc"}, 1);
   m.emplace(Employee{2, "bbc"}, 2);
   m.emplace(Employee{3333, "ccb"}, 3);
 
-  std::cout << "custom comparitor:" << m.find(3333)->first.getId();
+  std::cout << "custom Comparator:" << m.find(3333)->first.getId();
 }
 
 struct CaseInsensitiveCompare {
@@ -94,7 +94,7 @@ void caseInsensitiveCompare()
 
 int main() {
   example1();
-  transaparentContainer();
+  transparentContainer();
   caseInsensitiveCompare();
   return 0;
 }

@@ -20,7 +20,7 @@ int randomNumberInt(int low =0, int high =100)
     // Use mergen twister engine 
     std::mt19937 gen(rd());
 
-    // Define uniform interger distribution
+    // Define uniform integer distribution
     std::uniform_int_distribution<> dist(low, high);
 
     // generate a random number

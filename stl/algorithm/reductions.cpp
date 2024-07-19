@@ -23,7 +23,7 @@ int main() {
   std::vector<uint32_t> vec(10);
   std::iota(vec.begin(), vec.end(), 0);
 
-  // sum of all indecies
+  // sum of all indicies
   auto sum = std::reduce(vec.begin(), vec.end()); // v0+v1+v2....+vn = sum
 
   auto sum1 =
@@ -38,7 +38,7 @@ int main() {
       std::reduce(w.begin(), w.end(), 1.0,
                   std::multiplies<>{}); // 1.0*2.0*1.5*3.0*1.5=product
 
-  // execute parellel sum
+  // execute parallel sum
   auto psum = std::reduce(std::execution::par, vec.begin(), vec.end());
 
   std::cout << "sum :" << sum << "\n";
