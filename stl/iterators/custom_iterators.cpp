@@ -1,6 +1,6 @@
 #include <iostream>
 
-template<typename T>
+template <typename T>
 class RangeIterator
 {
 public:
@@ -17,36 +17,37 @@ public:
     // Type of difference between two iterators.
     using difference_type = int;
 
-    RangeIterator(T value)
-        : m_step(0), m_value(value)
-    { }
+    RangeIterator(T value) : m_step(0), m_value(value) {}
 
-    RangeIterator(T value, T step)
-        : m_step(step), m_value(value)
-    { }
+    RangeIterator(T value, T step) : m_step(step), m_value(value) {}
 
     // Dereference operator:
-    value_type& operator*() {
+    value_type& operator*()
+    {
         return m_value;
     }
 
     // Dereference operator:
-    const value_type&  operator*() const  {
+    const value_type& operator*() const
+    {
         return m_value;
     }
 
-    value_type* operator->() {
+    value_type* operator->()
+    {
         return &m_value;
     }
 
     // Prefix increment operator
-    RangeIterator& operator++() {
+    RangeIterator& operator++()
+    {
         m_value += m_step;
         return *this;
     }
 
     // Postfix increment operator
-    RangeIterator& operator++(int) {
+    RangeIterator& operator++(int)
+    {
         m_value += m_step;
         return *this;
     }
@@ -63,5 +64,5 @@ public:
 
 private:
     T const m_step;
-    T  m_value;
+    T m_value;
 };

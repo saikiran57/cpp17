@@ -9,21 +9,20 @@
  *
  */
 
-#include <iostream>
-#include <vector>
 #include <algorithm>
+#include <iostream>
 #include <numeric>
+#include <vector>
 
-int main() {
-  std::vector<int> testVector(1000000);
-  std::cout << "size: " << testVector.size() << "\n";
-  std::iota(testVector.begin(), testVector.end(), 0);
-  std::vector vecNeedle(testVector.end() - 1000, testVector.end());
+int main()
+{
+    std::vector<int> testVector(1000000);
+    std::cout << "size: " << testVector.size() << "\n";
+    std::iota(testVector.begin(), testVector.end(), 0);
+    std::vector vecNeedle(testVector.end() - 1000, testVector.end());
 
-  auto it = std::search(
-      testVector.begin(), testVector.end(),
-      std::boyer_moore_horspool_searcher(vecNeedle.begin(), vecNeedle.end()));
+    auto it = std::search(testVector.begin(), testVector.end(),
+                          std::boyer_moore_horspool_searcher(vecNeedle.begin(), vecNeedle.end()));
 
-  if (it == testVector.end())
-    std::cout << "The pattern not found\n";
+    if (it == testVector.end()) std::cout << "The pattern not found\n";
 }

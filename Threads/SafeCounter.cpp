@@ -11,7 +11,7 @@
 
 #include <iostream>
 #include <mutex>
-#include <shared_mutex> // c++17
+#include <shared_mutex>  // c++17
 #include <thread>
 
 /**
@@ -31,27 +31,31 @@
  * data when no other thread is reading or writing at the same time.
  *
  */
-class SafeCounter {
+class SafeCounter
+{
 public:
-  void increment() {
-    std::unique_lock lk(smu);
-    ++value;
-  }
+    void increment()
+    {
+        std::unique_lock lk(smu);
+        ++value;
+    }
 
-  uint32_t get() const {
-    std::shared_lock lk(smu);
-    return value;
-  }
+    uint32_t get() const
+    {
+        std::shared_lock lk(smu);
+        return value;
+    }
 
 private:
-  mutable std::shared_mutex smu;
-  uint32_t value{0};
+    mutable std::shared_mutex smu;
+    uint32_t value{0};
 };
 
-int main() {
+int main()
+{
     SafeCounter counter;
 
-    auto inc = [&](){
+    auto inc = [&]() {
         for (size_t i = 0; i < 3; i++)
         {
             counter.increment();

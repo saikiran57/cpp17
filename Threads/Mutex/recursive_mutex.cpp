@@ -1,32 +1,32 @@
 /**
  * @file recursive_mutex.cpp
  * @author Saikiran Nadipilli
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2024-07-11
- * 
+ *
  * @copyright Copyright (c) 2024
- * 
+ *
  */
 
 /**
  * https://en.cppreference.com/w/cpp/thread/recursive_mutex
  * @brief Recursive Mutex is a synchronization primitive that can be used to protect shared data
  * from being simultaneously accessed by multiple threads.
- * 
+ *
  * recursive mutex offers exclusive and recursive ownership.
- * 
- * A calling threads owns a recursive_mutex that successfully acquire lock or try_lock, during that period 
- * the thread may additional calls to lock or try_lock. Ownership will ends when the thread makes additional 
+ *
+ * A calling threads owns a recursive_mutex that successfully acquire lock or try_lock, during that period
+ * the thread may additional calls to lock or try_lock. Ownership will ends when the thread makes additional
  * calls to unlock.
- * 
- * When a thread owns a recursive_mutex, all other threads will block. 
- * 
+ *
+ * When a thread owns a recursive_mutex, all other threads will block.
+ *
  */
 
 #include <iostream>
-#include <thread>
 #include <mutex>
+#include <thread>
 
 int value = 0;
 std::recursive_mutex rc;

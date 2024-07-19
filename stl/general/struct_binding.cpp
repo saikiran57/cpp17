@@ -2,7 +2,7 @@
 
 /**
  * Struct binding
-*/
+ */
 
 int main()
 {

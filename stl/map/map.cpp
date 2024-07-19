@@ -1,21 +1,22 @@
 /**
  * @file map.cpp
  * @author Saikiran Nadipilli
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2024-06-21
- * 
+ *
  * @copyright Copyright (c) 2024
- * 
+ *
  */
 
 #include <iostream>
 #include <map>
 
 /*
-* https://www.geeksforgeeks.org/c-map-key-user-define-data-type/
-*/
-struct Abc{
+ * https://www.geeksforgeeks.org/c-map-key-user-define-data-type/
+ */
+struct Abc
+{
     std::string name;
     int a;
 
@@ -41,11 +42,12 @@ void mapFuncComplex()
     {
         std::cout << obj.a << ":" << obj.name << ":" << val << "\n";
     }
-    
+
     auto pos = m.find(ob2);
-    if (pos != m.end());
+    if (pos != m.end())
+        ;
     {
-        std::cout << "Value found: " << pos->first.a << ":"<< pos->first.name << ":" << pos->second << "\n";
+        std::cout << "Value found: " << pos->first.a << ":" << pos->first.name << ":" << pos->second << "\n";
     }
 }
 

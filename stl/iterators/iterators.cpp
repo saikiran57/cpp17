@@ -4,22 +4,22 @@
 /**
  * https://en.cppreference.com/w/cpp/iterator
  * https://www.geeksforgeeks.org/iterators-c-stl/?ref=ml_lbp
- * 
+ *
  * Iterators are used to point at the memory address of stl containers
  * Iterators Operations c++17
- * 
+ *
  * Advance
- * 
+ *
  * distance
- * 
+ *
  * next
- * 
+ *
  * prev
- * 
-*/
+ *
+ */
 int main()
 {
-    std::vector<int> vec{1,2,3,4,5,6,7,8,9};
+    std::vector<int> vec{1, 2, 3, 4, 5, 6, 7, 8, 9};
     auto vecBegin = vec.begin();
     auto vecEnd = vec.end();
 

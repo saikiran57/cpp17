@@ -1,38 +1,38 @@
 /**
  * @file shared_mutex.cpp
  * @author Saikiran Nadipilli
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2024-07-11
- * 
+ *
  * @copyright Copyright (c) 2024
- * 
+ *
  */
 
 /**
  * https://en.cppreference.com/w/cpp/thread/shared_mutex
  * @brief Shared mutex is a synchronization primitive that can be used to protect shared data
  * from begin simultaneously accessed by multiple threads.
- * 
+ *
  * shared_mutex has exclusive and shared ownership.
- * 
+ *
  * If one thread has acquired the exclusive lock, no other thread can acquire the lock(including shared lock)
- * 
- * If one thread has acquired the shared lock, no other thread can acquire the lock exclusive lock, but can 
+ *
+ * If one thread has acquired the shared lock, no other thread can acquire the lock exclusive lock, but can
  * acquire the shared lock.
- * 
+ *
  * Within one thread only one lock(exclusive or shared) can be acquired by the same time.
- * 
+ *
  * Shared mutexes are especially useful when shared data can be safely read my multiple threads simultaneously.
  * but a thread may only write the same data when no other thread is reading or writing.
  */
 
 #include <iostream>
-#include <thread>
 #include <mutex>
 #include <shared_mutex>
+#include <thread>
 
-int value=0;
+int value = 0;
 std::shared_mutex sm;
 
 // mutiple threads can read the value at the same time
@@ -51,7 +51,7 @@ void increment()
 
 int main()
 {
-    auto func = [](){
+    auto func = []() {
         for (size_t i = 0; i < 5; i++)
         {
             increment();
@@ -64,5 +64,4 @@ int main()
 
     t1.join();
     t2.join();
-
 }
