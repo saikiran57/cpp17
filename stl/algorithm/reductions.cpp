@@ -24,7 +24,7 @@ int main()
     std::vector<uint32_t> vec(10);
     std::iota(vec.begin(), vec.end(), 0);
 
-    // sum of all indicies
+    // sum of all indices
     auto sum = std::reduce(vec.begin(), vec.end());  // v0+v1+v2....+vn = sum
 
     auto sum1 = std::reduce(vec.begin(), vec.end(), 100);  // 100+v0+v1+v2....+vn = sum

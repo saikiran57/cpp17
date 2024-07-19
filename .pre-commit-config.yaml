@@ -31,6 +31,11 @@ repos:
       - id: prettier
         files: \.(js|ts|jsx|tsx|css|less|html|json|markdown|md|yaml|yml)$
 
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.2.4
+    hooks:
+      - id: codespell
+
   # - repo: local
   #   hooks:
   #     # keep this before clang-tidy, it generates compile_commands.json for it.

@@ -28,7 +28,7 @@ void testFunc()
 {
     std::vector<int> v{1, 23, 0, -1, -2};
 
-    // standard sort incresing order
+    // standard sort increasing order
     std::sort(v.begin(), v.end());
     print("standard sort increasing:", v);
 

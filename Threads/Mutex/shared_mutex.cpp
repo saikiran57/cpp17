@@ -35,7 +35,7 @@
 int value = 0;
 std::shared_mutex sm;
 
-// mutiple threads can read the value at the same time
+// multiple threads can read the value at the same time
 int get()
 {
     std::shared_lock sl(sm);
