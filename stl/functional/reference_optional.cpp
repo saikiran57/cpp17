@@ -9,7 +9,7 @@
  *
  */
 
-/** 
+/**
  * https://godbolt.org/z/araaefxT9
  * https://www.learncpp.com/cpp-tutorial/stdoptional/
  */

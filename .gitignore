@@ -8,3 +8,4 @@
 !.gitignore
 !README.md
 !.pre-commit-config.yaml
+!format_all_cpp_files.sh
