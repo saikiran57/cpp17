@@ -37,6 +37,22 @@ repos:
 
   # - repo: local
   #   hooks:
+  #     - id: run-unit-tests
+  #       name: Run unit tests
+  #       entry: npm run test
+  #       language: system
+  #       stages: [commit]
+
+  # - repo: https://github.com/Takishima/cmake-pre-commit-hooks
+  #   rev: v1.9.6
+  #   hooks:
+  #     - id: clang-format
+  #     - id: clang-tidy
+  #       args: [--checks=readability-magic-numbers,--warnings-as-errors=*]
+  #     - id: cppcheck
+  #     - id: include-what-you-use
+  # - repo: local
+  #   hooks:
   #     # keep this before clang-tidy, it generates compile_commands.json for it.
   #     # requires the 'compiledb' tool, 'pip install compiledb'
   #     - id: compiledb

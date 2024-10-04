@@ -182,15 +182,16 @@ public:
         return m_ByteArray.size();
     }
 
-    std::string to_string(bool upperCase=true, bool prefix=true) const noexcept
+    std::string to_string(bool upperCase = true, bool prefix = true) const noexcept
     {
         std::stringstream ss;
 
-        ss << (upperCase ? std::uppercase : std::nouppercase) << (prefix ? "0x": "" );
+        ss << (upperCase ? std::uppercase : std::nouppercase) << (prefix ? "0x" : "");
 
         for (auto&& byte : m_ByteArray)
         {
-            ss << (upperCase ? std::uppercase : std::nouppercase) << std::setfill('0') << std::setw(2) << std::hex << static_cast<int>(byte);
+            ss << (upperCase ? std::uppercase : std::nouppercase) << std::setfill('0') << std::setw(2) << std::hex
+               << static_cast<int>(byte);
         }
 
         return ss.str();
