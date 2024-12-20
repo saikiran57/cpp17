@@ -16,4 +16,23 @@
  *
  * https://www.geeksforgeeks.org/cpp-17-inline-variables/
  *
+ * Inline variables have external linkage by default, so that they are visible to the linker.
+ * This is necessary so the linker can de-duplicate the definitions.
+ *
+ * Non-inline constexpr variables have internal linkage. If included into multiple translation units, each translation
+ * unit will get its own copy of the variable. This is not an ODR violation because they are not exposed to the linker.
  */
+
+#include <iostream>
+
+namespace constants
+{
+inline constexpr auto PI{1.33333};
+}
+
+int main()
+{
+    static_assert(constants::PI == 1.33333);
+
+    return 0;
+}
