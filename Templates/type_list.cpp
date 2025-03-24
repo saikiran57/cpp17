@@ -54,7 +54,6 @@
 
 template <typename T, typename... Types>
 constexpr bool are_types_unique_v = (!std::is_same_v<T, Types> && ...) && are_types_unique_v<Types...>;
-;
 
 template <typename T>
 constexpr bool are_types_unique_v<T> = true;

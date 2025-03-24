@@ -15,6 +15,7 @@
 #include <iostream>
 #include <map>
 #include <memory>
+#include <mutex>
 #include <random>
 #include <unordered_map>
 
@@ -82,98 +83,243 @@ class ScriptPubKeyMan
 public:
     ScriptPubKeyMan() = default;
     virtual ~ScriptPubKeyMan() = default;
+    bool HasWalletDescriptor(const std::string& desc) const;
 };
 
 class DescriptorScriptPubKeyMan : public ScriptPubKeyMan
 {
     std::string descriptor;
+    mutable std::recursive_mutex cs_desc_man;
 
 public:
     DescriptorScriptPubKeyMan(const std::string& desc) : descriptor(desc) {}
     ~DescriptorScriptPubKeyMan() = default;
     bool HasWalletDescriptor(const std::string& desc) const
     {
+        std::scoped_lock lk(cs_desc_man);
         return descriptor == desc;
     }
 };
 
-using AddressMap = std::unordered_map<uint256, std::unique_ptr<ScriptPubKeyMan>, uint256::Hash>;
-// using AddressMap = std::map<uint256, std::unique_ptr<ScriptPubKeyMan>>;
+// using AddressMap = std::unordered_map<uint256, std::unique_ptr<ScriptPubKeyMan>, uint256::Hash>;
+using AddressMap = std::map<uint256, std::unique_ptr<ScriptPubKeyMan>>;
 
-bool hasAddress(const std::string& myrandomAddress, AddressMap& addressMap)
+class CWallet final
 {
-    for (auto& address : addressMap)
-    {
-        //++i;
-        // Try to downcast to DescriptorScriptPubKeyMan then check if the descriptors match
-        DescriptorScriptPubKeyMan* spk_manager = dynamic_cast<DescriptorScriptPubKeyMan*>(address.second.get());
-        if (spk_manager != nullptr && spk_manager->HasWalletDescriptor(myrandomAddress))
-        {
-            // std::cout << "found: " << myrandomAddress << " count " << std::to_string(i) << " first " << address.first
-            //           << "\n";
-            return true;
-        }
+public:
+    explicit CWallet(const size_t addressCount = 2000000);
+    bool AddWalletDescriptor_Old(const uint256& index, const std::string& address);
+    bool AddWalletDescriptor_New(const uint256& index, const std::string& address);
+    void AddScriptPubKeyMan(const uint256& id, std::unique_ptr<ScriptPubKeyMan> spkm_man);
+    DescriptorScriptPubKeyMan* GetDescriptorScriptPubKeyMan_New(const uint256& index,
+                                                                const std::string& myrandomAddress) const;
+    DescriptorScriptPubKeyMan* GetDescriptorScriptPubKeyMan_Old(const std::string& myrandomAddress) const;
 
-        // std::cout << " count "<<  std::to_string(i) << "\n";
-    }
+private:
+    // Indexed by a unique identifier produced by each ScriptPubKeyMan using
+    // ScriptPubKeyMan::GetID. In many cases it will be the hash of an internal structure
+    AddressMap m_spk_managers;
+};
 
-    return false;
-}
-
-int main()
+CWallet::CWallet(const size_t addressCount)
 {
-    const size_t addressCount = 2000000;
-    // AddressMap addressMap;
-    AddressMap addressMap;
-    std::string myrandomAddress;
+    // std::string myrandomAddress;
+    // std::uniform_int_distribution<size_t> dist(0, addressCount);
 
     // Initialize random number generator
     std::mt19937 rng(std::chrono::system_clock::now().time_since_epoch().count());
-
     {
-        ExecutionTimer<std::chrono::seconds> et;
+        auto message = "Load wallet with given size:" + std::to_string(addressCount);
+        ExecutionTimer<std::chrono::seconds> et(message);
 
         // Generate 2 million random addresses
         for (size_t i = 0; i < addressCount; ++i)
         {
             uint256 randomAddress = generateRandomUint256(rng);
             auto descriptor = "Address" + std::to_string(i);
-            addressMap[randomAddress] = std::make_unique<DescriptorScriptPubKeyMan>(descriptor);
+            m_spk_managers[randomAddress] = std::make_unique<DescriptorScriptPubKeyMan>(descriptor);
         }
     }
+}
+
+bool CWallet::AddWalletDescriptor_Old(const uint256& index, const std::string& address)
+{
+    auto spk_mgr = GetDescriptorScriptPubKeyMan_Old(address);
+
+    if (spk_mgr)
+    {
+        return true;
+    }
+    else
+    {
+        auto new_spk_man = std::make_unique<DescriptorScriptPubKeyMan>(address);
+        AddScriptPubKeyMan(index, std::move(new_spk_man));
+    }
+    return false;
+}
+
+DescriptorScriptPubKeyMan* CWallet::GetDescriptorScriptPubKeyMan_Old(const std::string& myrandomAddress) const
+{
+    for (auto& spk_man_pair : m_spk_managers)
+    {
+        // Try to downcast to DescriptorScriptPubKeyMan then check if the descriptors match
+        DescriptorScriptPubKeyMan* spk_manager = dynamic_cast<DescriptorScriptPubKeyMan*>(spk_man_pair.second.get());
+        if (spk_manager != nullptr && spk_manager->HasWalletDescriptor(myrandomAddress))
+        {
+            return spk_manager;
+        }
+    }
+
+    return nullptr;
+}
+
+bool CWallet::AddWalletDescriptor_New(const uint256& index, const std::string& address)
+{
+    auto spk_mgr = GetDescriptorScriptPubKeyMan_New(index, address);
+
+    if (spk_mgr)
+    {
+        return true;
+    }
+    else
+    {
+        auto new_spk_man = std::make_unique<DescriptorScriptPubKeyMan>(address);
+        AddScriptPubKeyMan(index, std::move(new_spk_man));
+    }
+    return false;
+}
+
+DescriptorScriptPubKeyMan* CWallet::GetDescriptorScriptPubKeyMan_New(const uint256& index,
+                                                                     const std::string& myrandomAddress) const
+{
+    auto spk_man_pair = m_spk_managers.find(index);
+
+    if (spk_man_pair != m_spk_managers.end())
+    {
+        DescriptorScriptPubKeyMan* spk_manager = dynamic_cast<DescriptorScriptPubKeyMan*>(spk_man_pair->second.get());
+        if (spk_manager != nullptr && spk_manager->HasWalletDescriptor(myrandomAddress))
+        {
+            return spk_manager;
+        }
+    }
+
+    return nullptr;
+}
+
+void CWallet::AddScriptPubKeyMan(const uint256& id, std::unique_ptr<ScriptPubKeyMan> spkm_man)
+{
+    // Add spkm_man to m_spk_managers before calling any method
+    // that might access it.
+    m_spk_managers[id] = std::move(spkm_man);
+}
+
+int main()
+{
+    const size_t addressCount = 2000000;
+
+    CWallet wallet(addressCount);
+    // driver code to test 1000
+    auto iterationCount = 100;
 
     {
-        ExecutionTimer<std::chrono::seconds> et;
+        // Test existing descriptor
+        ExecutionTimer<std::chrono::seconds> et("Importdescriptor call with old code");
         auto iteration = 0;
-        while (iteration < 1000)
+        size_t i = addressCount;
+        std::mt19937 rng(std::chrono::system_clock::now().time_since_epoch().count());
+        while (iteration < iterationCount)
         {
-            // ExecutionTimer<std::chrono::milliseconds> et;
+            ExecutionTimer<std::chrono::milliseconds> et;
+            auto myrandomAddress = "Address" + std::to_string(i);
+            uint256 index = generateRandomUint256(rng);
 
-            size_t i = 0;
-            std::uniform_int_distribution<size_t> dist(0, addressCount);
-
-            myrandomAddress = "Address" + std::to_string(dist(rng));
-
-            ++iteration;
+            // Check if the wallet already contains the descriptor
+            auto existing_spk_manager = wallet.GetDescriptorScriptPubKeyMan_Old(myrandomAddress);
+            if (existing_spk_manager)
+            {
+                break;
+            }
 
             std::cout << "iteration: " << iteration << " address: " << myrandomAddress
-                      << " found: " << hasAddress(myrandomAddress, addressMap) << "\n";
-
-            // Generate a random address to search
-            // uint256 searchAddress = generateRandomUint256(rng);
-
-            // Search for the random address in the ma
-            // auto it = addressMap.find(myrandomAddress);
-            // if (it != addressMap.end())
-            // {
-            //     std::cout << "Found address: " << it->second << " with key: " << it->first << "\n";
-            // }
-            // else
-            // {
-            //     std::cout << "Address not found." << std::endl;
-            // }
+                      << " found: " << wallet.AddWalletDescriptor_Old(index, myrandomAddress) << "\n";
+            ++iteration;
+            ++i;
         }
     }
 
-    return 0;
+    std::cout << "--------------- test case new code ----------------\n";
+    {
+        // Test improved descriptor
+        ExecutionTimer<std::chrono::seconds> et("Importdescriptor call with new code");
+        auto iteration = 0;
+        size_t i = addressCount;
+        std::mt19937 rng(std::chrono::system_clock::now().time_since_epoch().count());
+        while (iteration < iterationCount)
+        {
+            ExecutionTimer<std::chrono::milliseconds> et;
+            auto myrandomAddress = "Address" + std::to_string(i);
+            uint256 index = generateRandomUint256(rng);
+
+            std::cout << "iteration: " << iteration << " address: " << myrandomAddress
+                      << " found: " << wallet.AddWalletDescriptor_New(index, myrandomAddress) << "\n";
+            ++iteration;
+            ++i;
+        }
+    }
 }
+
+// bool hasAddress(const std::string& myrandomAddress, AddressMap& addressMap)
+// {
+//     for (auto& address : addressMap)
+//     {
+//         // Try to downcast to DescriptorScriptPubKeyMan then check if the descriptors match
+//         //DescriptorScriptPubKeyMan* spk_manager = dynamic_cast<DescriptorScriptPubKeyMan*>(address.second.get());
+//         auto spk_manager = address.second.get();
+//         if (spk_manager != nullptr && spk_manager->HasWalletDescriptor(myrandomAddress))
+//         {
+//             return true;
+//         }
+//     }
+
+//     return false;
+// }
+
+// int main()
+// {
+//     const size_t addressCount = 2000000;
+//     AddressMap addressMap;
+//     std::string myrandomAddress;
+
+//     // Initialize random number generator
+//     std::mt19937 rng(std::chrono::system_clock::now().time_since_epoch().count());
+//     std::uniform_int_distribution<size_t> dist(0, addressCount);
+
+//     {
+//         ExecutionTimer<std::chrono::seconds> et;
+
+//         // Generate 2 million random addresses
+//         for (size_t i = 0; i < addressCount; ++i)
+//         {
+//             uint256 randomAddress = generateRandomUint256(rng);
+//             auto descriptor = "Address" + std::to_string(i);
+//             addressMap[randomAddress] = std::make_unique<DescriptorScriptPubKeyMan>(descriptor);
+//         }
+//     }
+
+//     {
+//         auto iterationCount = 1000;
+//         ExecutionTimer<std::chrono::seconds> et;
+//         auto iteration = 0;
+//         std::uniform_int_distribution<size_t> dist(addressCount, addressCount+addressCount);
+//         while (iteration < iterationCount)
+//         {
+//             ExecutionTimer<std::chrono::milliseconds> et;
+//             myrandomAddress = "Address" + std::to_string(dist(rng));
+//             std::cout << "iteration: " << iteration << " address: " << myrandomAddress
+//                       << " found: " << hasAddress(myrandomAddress, addressMap) << "\n";
+//             ++iteration;
+//         }
+//     }
+
+//     return 0;
+// }

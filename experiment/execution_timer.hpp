@@ -1,5 +1,6 @@
 #pragma once
 
+#include <atomic>
 #include <chrono>
 #include <iostream>
 #include <sstream>
@@ -45,21 +46,36 @@ public:
                                      std::chrono::steady_clock>;
 
 private:
-    const Clock::time_point mStart = Clock::now();
+    Clock::time_point mStart = Clock::now();
+    std::string m_message = "";
+    std::atomic_bool m_isStopped = false;
 
 public:
     constexpr ExecutionTimer() = default;
+    constexpr ExecutionTimer(const std::string& message) : m_message(message) {}
     ~ExecutionTimer()
     {
-        stop();
+        if (!m_isStopped)
+        {
+            stop();
+        }
+    }
+
+    constexpr void start(const std::string& message)
+    {
+        m_message = message;
+        m_isStopped = false;
+        mStart = Clock::now();
     }
 
     constexpr void stop()
     {
         const auto end = Clock::now();
         std::ostringstream strStream;
-        strStream << "Time Elapsed: " << std::chrono::duration_cast<Resolution>(end - mStart).count() << " "
+        strStream << "Time Elapsed for " << m_message << " : "
+                  << std::chrono::duration_cast<Resolution>(end - mStart).count() << " "
                   << TimeVariantType<Resolution>() << std::endl;
         std::cout << strStream.str() << std::endl;
+        m_isStopped = true;
     }
 };  // ExecutionTimer
