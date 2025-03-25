@@ -16,11 +16,15 @@
  *
  */
 
+#include <cctype>
+#include <functional>
 #include <iostream>
 #include <map>
 #include <string>
+#include <string_view>
+#include <utility>
 
-void example1()
+static void example1()
 {
     std::map<std::string, int, std::less<>> m{{"abc", 1}, {"bbc", 2}, {"ccb", 3}};
 
@@ -43,21 +47,21 @@ class Employee
 {
 public:
     Employee() = default;
-    Employee(int id, const std::string& name) : m_Id(id), m_Name(name) {}
-    int getId() const
+    Employee(int id, std::string name) : m_id(id), m_name(std::move(name)) {}
+    [[nodiscard]] int getId() const
     {
-        return m_Id;
+        return m_id;
     }
 
 private:
-    int m_Id;
-    std::string m_Name;
+    int m_id{};
+    std::string m_name;
 };
 
 struct CustomComparator
 {
-    using is_transparent = void;  // for example with void,
-                                  // but could be int or struct CanSearchOnId;
+    using t_IsTransparent = void;  // for example with void,
+                                   // but could be int or struct CanSearchOnId;
     bool operator()(Employee const& employee1, Employee const& employee2) const
     {
         return employee1.getId() < employee2.getId();
@@ -72,9 +76,9 @@ struct CustomComparator
     }
 };
 
-void transparentContainer()
+static void transparentContainer()
 {
-    Employee e;
+    Employee const e;
     std::map<Employee, int, CustomComparator> m;
 
     m.emplace(Employee{1, "abc"}, 1);
@@ -86,17 +90,17 @@ void transparentContainer()
 
 struct CaseInsensitiveCompare
 {
-    using is_transparent = void;  // Enables heterogeneous operations.
+    using t_IsTransparent = void;  // Enables heterogeneous operations.
 
     bool operator()(const std::string_view& lhs, const std::string_view& rhs) const
     {
-        return std::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), [](char l, char r) {
+        return std::ranges::lexicographical_compare(lhs, , rhs, , [](char l, char r) {
             return std::tolower(l) < std::tolower(r);
         });
     }
 };
 
-void caseInsensitiveCompare()
+static void caseInsensitiveCompare()
 {
     std::map<std::string, int, CaseInsensitiveCompare> m = {// Compliant
                                                             {"Dory", 1},

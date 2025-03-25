@@ -10,11 +10,12 @@
  */
 
 #include <iostream>
+#include <string>
 #include <unordered_map>
 
 int main()
 {
-    std::string s("testtest");
+    std::string const s("testtest");
     std::unordered_map<char, int> map;
 
     for (auto c : s)

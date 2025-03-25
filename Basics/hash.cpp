@@ -9,7 +9,7 @@
  *
  */
 
-#include <iomanip>
+#include <cstddef>
 #include <iostream>
 #include <string>
 #include <unordered_map>
@@ -20,13 +20,13 @@
  * @param s
  * @return long long
  */
-size_t compute_hash(std::string const& s)
+static size_t compute_hash(std::string const& s)
 {
     const int p = 31;
     const int m = 1e9 + 9;
     size_t hash_value = 0;
     size_t p_pow = 1;
-    for (char c : s)
+    for (char const c : s)
     {
         hash_value = (hash_value + (c - 'a' + 1) * p_pow) % m;
         p_pow = (p_pow * p) % m;
@@ -64,9 +64,9 @@ int main()
 
     std::unordered_map<std::string, std::string, MyStringHash> uMap;
 
-    std::string str = "sai";
+    std::string const str = "sai";
     uMap[str] = str;
-    auto str2 = "ias";
+    const auto* str2 = "ias";
     uMap[str2] = str2;
 
     std::cout << "uMpa size: " << uMap.size() << "\n";

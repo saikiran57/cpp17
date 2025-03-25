@@ -17,18 +17,18 @@
 class MyObject
 {
 public:
-    int property1;
-    double property2;
-    std::string property3;
+    int m_property1;
+    double m_property2;
+    std::string m_property3;
 
-    MyObject(int p1, double p2, const std::string& p3) : property1(p1), property2(p2), property3(p3) {}
+    MyObject(int p1, double p2, const std::string& p3) : m_property1(p1), m_property2(p2), m_property3(p3) {}
 };
 
 void printVector(const std::vector<MyObject>& vec)
 {
     for (const auto& obj : vec)
     {
-        std::cout << "(" << obj.property1 << ", " << obj.property2 << ", " << obj.property3 << ") ";
+        std::cout << "(" << obj.m_property1 << ", " << obj.m_property2 << ", " << obj.m_property3 << ") ";
     }
     std::cout << std::endl;
 }
@@ -47,21 +47,21 @@ int main()
 
     // Sort by property1 using projection
     sortWithProjection(vec, [](const MyObject& obj) {
-        return obj.property1;
+        return obj.m_property1;
     });
     std::cout << "Sorted by property1:" << std::endl;
     printVector(vec);
 
     // Sort by property2 using projection
     sortWithProjection(vec, [](const MyObject& obj) {
-        return obj.property2;
+        return obj.m_property2;
     });
     std::cout << "Sorted by property2:" << std::endl;
     printVector(vec);
 
     // Sort by property3 using projection
     sortWithProjection(vec, [](const MyObject& obj) {
-        return obj.property3;
+        return obj.m_property3;
     });
     std::cout << "Sorted by property3:" << std::endl;
     printVector(vec);

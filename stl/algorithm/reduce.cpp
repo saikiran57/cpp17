@@ -1,4 +1,5 @@
 
+#include <ratio>
 #if PARALLEL
 #include <execution>
 #define SEQ std::execution::seq,
@@ -47,7 +48,7 @@ int main()
         const std::vector<long> v(100'000'007, 1);
 
         eval([&v] {
-            return std::pair{"std::accumulate (long)", std::accumulate(v.cbegin(), v.cend(), 0l)};
+            return std::pair{"std::accumulate (long)", std::accumulate(v.cbegin(), v.cend(), 0L)};
         });
         eval([&v] {
             return std::pair{"std::reduce (seq, long)", std::reduce(SEQ v.cbegin(), v.cend())};

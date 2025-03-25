@@ -54,12 +54,12 @@
 
 struct Bad
 {
-    Bad() {}
-    Bad(Bad&&)  // may throw
+    Bad() = default;
+    Bad(Bad&& /*unused*/) noexcept  // may throw
     {
         std::cout << "Throwing move constructor called\n";
     }
-    Bad(const Bad&)  // may throw as well
+    Bad(const Bad& /*unused*/)  // may throw as well
     {
         std::cout << "Throwing copy constructor called\n";
     }
@@ -67,12 +67,12 @@ struct Bad
 
 struct Good
 {
-    Good() {}
-    Good(Good&&) noexcept  // will NOT throw
+    Good() = default;
+    Good(Good&& /*unused*/) noexcept  // will NOT throw
     {
         std::cout << "Non-throwing move constructor called\n";
     }
-    Good(const Good&) noexcept  // will NOT throw
+    Good(const Good& /*unused*/) noexcept  // will NOT throw
     {
         std::cout << "Non-throwing copy constructor called\n";
     }
@@ -82,6 +82,6 @@ int main()
 {
     Good g;
     Bad b;
-    [[maybe_unused]] Good g2 = std::move_if_noexcept(g);
-    [[maybe_unused]] Bad b2 = std::move_if_noexcept(b);
+    [[maybe_unused]] Good const g2 = std::move_if_noexcept(g);
+    [[maybe_unused]] Bad const b2 = std::move_if_noexcept(b);
 }

@@ -1,14 +1,14 @@
 #include <iostream>
 #include <queue>
 
-struct node
+struct Node
 {
-    int sum;
-    int element;
+    int m_sum;
+    int m_element;
 
-    constexpr bool operator<(const node& r) const noexcept
+    constexpr bool operator<(const Node& r) const noexcept
     {
-        return this->sum < r.sum;
+        return this->m_sum < r.m_sum;
     }
 };
 
@@ -20,15 +20,15 @@ struct node
 // };
 
 // lambda function
-auto customLess = [](node& l, node& r) {
-    return l.sum < r.sum && l.element < r.element;
+auto customLess = [](Node& l, Node& r) {
+    return l.m_sum < r.m_sum && l.m_element < r.m_element;
 };
 
 struct CustomLess
 {
-    constexpr bool operator()(const node& l, const node& r) const noexcept
+    constexpr bool operator()(const Node& l, const Node& r) const noexcept
     {
-        return l.sum < r.sum;
+        return l.m_sum < r.m_sum;
     }
 };
 
@@ -41,11 +41,11 @@ struct CustomLess
 //     }
 // }
 
-void print_pq(std::priority_queue<node>& pq)
+void print_pq(std::priority_queue<Node>& pq)
 {
     while (!pq.empty())
     {
-        std::cout << "sum:" << pq.top().sum << " element:" << pq.top().element << "\n";
+        std::cout << "sum:" << pq.top().m_sum << " element:" << pq.top().m_element << "\n";
         pq.pop();
     }
 }
@@ -53,12 +53,12 @@ void print_pq(std::priority_queue<node>& pq)
 int main()
 {
     // std::priority_queue<node, std::vector<node>, decltype(customLess)> pq(customLess);
-    std::priority_queue<node> pq;
-    pq.push(node{1, 1});
-    pq.push(node{4, 22});
-    pq.push(node{5, 23});
-    pq.push(node{5, 32});
-    pq.push(node{6, 33});
+    std::priority_queue<Node> pq;
+    pq.push(Node{1, 1});
+    pq.push(Node{4, 22});
+    pq.push(Node{5, 23});
+    pq.push(Node{5, 32});
+    pq.push(Node{6, 33});
 
     print_pq(pq);
 

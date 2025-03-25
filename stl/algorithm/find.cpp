@@ -1,7 +1,5 @@
 
-#include <algorithm>
 #include <iostream>
-#include <vector>
 
 int main()
 {
@@ -12,7 +10,7 @@ int main()
     for (auto i : {3, 5})
     {
         // find element
-        if (std::find(v.begin(), v.end(), i) != v.end())
+        if (std::ranges::find(v, , i) != v.end())
         {
             std::cout << "element found\n";
         }
@@ -27,7 +25,7 @@ int main()
         return i % 2 == 0;
     };
 
-    if (auto it = std::find_if(v.begin(), v.end(), isEven); it != v.end())
+    if (const auto* it = std::ranges::find_if(v, , isEven); it != v.end())
     {
         std::cout << "Even number: " << *it << std::endl;
     }
@@ -35,7 +33,7 @@ int main()
     // find_if_not
     const auto vec = {2, 4, 6, 8, 10, 11};
 
-    if (auto it = std::find_if_not(vec.begin(), vec.end(), isEven); it != v.end())
+    if (const auto* it = std::ranges::find_if_not(vec, , isEven); it != v.end())
     {
         std::cout << "odd number: " << *it << std::endl;
     }

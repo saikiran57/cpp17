@@ -9,9 +9,12 @@
  *
  */
 
+#include <cstddef>
+#include <cstdlib>
 #include <iostream>
 #include <optional>
 #include <string>
+#include <utility>
 
 /**
  * @brief https://www.cppstories.com/2018/07/in-place-cpp17/
@@ -33,53 +36,53 @@ void operator delete(void* ptr) noexcept
 class UserName
 {
 public:
-    explicit UserName() : mName("Default")
+    explicit UserName() : m_mName("Default")
     {
         std::cout << "UserName::UserName(\'";
-        std::cout << mName << "\')\n";
+        std::cout << m_mName << "\')\n";
     }
 
-    explicit UserName(const std::string& str) : mName(str)
+    explicit UserName(std::string str) : m_mName(std::move(str))
     {
         std::cout << "UserName::UserName(\'";
-        std::cout << mName << "\')\n";
+        std::cout << m_mName << "\')\n";
     }
     ~UserName()
     {
         std::cout << "UserName::~UserName(\'";
-        std::cout << mName << "\')\n";
+        std::cout << m_mName << "\')\n";
     }
-    UserName(const UserName& u) : mName(u.mName)
+    UserName(const UserName& u) : m_mName(u.m_mName)
     {
         std::cout << "UserName::UserName(copy \'";
-        std::cout << mName << "\')\n";
+        std::cout << m_mName << "\')\n";
     }
-    UserName(UserName&& u) : mName(std::move(u.mName))
+    UserName(UserName&& u) noexcept : m_mName(std::move(u.m_mName))
     {
         std::cout << "UserName::UserName(move \'";
-        std::cout << mName << "\')\n";
+        std::cout << m_mName << "\')\n";
     }
     UserName& operator=(const UserName& u)  // copy assignment
     {
-        mName = u.mName;
+        m_mName = u.m_mName;
 
         std::cout << "UserName::=(copy \'";
-        std::cout << mName << "\')\n";
+        std::cout << m_mName << "\')\n";
 
         return *this;
     }
-    UserName& operator=(UserName&& u)  // move assignment
+    UserName& operator=(UserName&& u) noexcept  // move assignment
     {
-        mName = std::move(u.mName);
+        m_mName = std::move(u.m_mName);
 
         std::cout << "UserName::=(move \'";
-        std::cout << mName << "\')\n";
+        std::cout << m_mName << "\')\n";
 
         return *this;
     }
 
 private:
-    std::string mName;
+    std::string m_mName;
 };
 
 int main()

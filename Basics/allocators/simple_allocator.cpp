@@ -10,6 +10,7 @@
  * https://godbolt.org/z/T7cE4MMbj
  */
 
+#include <cstddef>
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -18,12 +19,12 @@ template <typename T>
 class SimpleAllocator
 {
 public:
-    using value_type = T;
+    using t_ValueType = T;
 
     SimpleAllocator() = default;
 
     template <typename U>
-    constexpr SimpleAllocator(const SimpleAllocator<U>&) noexcept
+    constexpr explicit SimpleAllocator(const SimpleAllocator<U>& /*unused*/) noexcept
     {
     }
 
@@ -37,7 +38,7 @@ public:
         return static_cast<T*>(::operator new(n * sizeof(T)));
     }
 
-    void deallocate(T* p, std::size_t) noexcept
+    void deallocate(T* p, std::size_t /*unused*/) noexcept
     {
         std::cout << "Deallocating memory" << std::endl;
         ::operator delete(p);
@@ -57,11 +58,11 @@ public:
         p->~U();
     }
 
-    friend bool operator==(const SimpleAllocator&, const SimpleAllocator&)
+    friend bool operator==(const SimpleAllocator& /*unused*/, const SimpleAllocator& /*unused*/)
     {
         return true;
     }
-    friend bool operator!=(const SimpleAllocator&, const SimpleAllocator&)
+    friend bool operator!=(const SimpleAllocator& /*unused*/, const SimpleAllocator& /*unused*/)
     {
         return false;
     }
@@ -69,7 +70,7 @@ public:
 
 int main()
 {
-    SimpleAllocator<int> alloc;
+    SimpleAllocator<int> const alloc;
 
     std::vector<int, SimpleAllocator<int>> vec(alloc);
 

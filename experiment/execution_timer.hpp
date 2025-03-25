@@ -47,12 +47,12 @@ public:
 
 private:
     Clock::time_point mStart = Clock::now();
-    std::string m_message = "";
+    std::string m_message;
     std::atomic_bool m_isStopped = false;
 
 public:
     constexpr ExecutionTimer() = default;
-    constexpr ExecutionTimer(const std::string& message) : m_message(message) {}
+    constexpr explicit ExecutionTimer(const std::string& message) : m_message(message) {}
     ~ExecutionTimer()
     {
         if (!m_isStopped)

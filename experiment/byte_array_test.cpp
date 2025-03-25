@@ -1,8 +1,13 @@
 #include "byte_array.hpp"
+#include <cstdint>
+#include <ios>
+#include <iostream>
+#include <ostream>
+#include <vector>
 
 using namespace experiment;
 
-void print(std::vector<uint8_t> data)
+static void print(std::vector<uint8_t> data)
 {
     for (auto byte : data)
     {
@@ -13,14 +18,14 @@ void print(std::vector<uint8_t> data)
 
 int main()
 {
-    std::vector<uint8_t> data{0x2a, 0xff, 0x30};
+    std::vector<uint8_t> const data{0x2a, 0xff, 0x30};
     ByteArray ba(data);
 
     ba.append(data);
 
     std::cout << "address:" << ba.to_string() << "\n";
 
-    ByteArray b1("aabbccdd");
+    ByteArray const b1("aabbccdd");
 
     std::cout << "address:" << b1.to_string() << "\n";
 

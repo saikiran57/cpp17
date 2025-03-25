@@ -2,21 +2,23 @@
 // Numbers upto 10000000 using Sieve
 // of Eratosthenes with NO optimization
 
-#include "execution_timer.hpp"
 #include <chrono>
 #include <cmath>
 #include <iostream>
 #include <vector>
 
-#define N 10000005
+enum
+{
+    N = 10000005
+};
 using namespace std;
 
 // Boolean array for Prime Number
-vector<bool> prime(N, true);
+static vector<bool> prime(N, true);
 
 // Sieve implemented to find Prime
 // Number
-void sieveOfEratosthenes()
+static void sieveOfEratosthenes()
 {
     for (int i = 2; i <= sqrt(N); ++i)
     {

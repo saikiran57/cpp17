@@ -27,25 +27,26 @@
  * but a thread may only write the same data when no other thread is reading or writing.
  */
 
+#include <cstddef>
 #include <iostream>
 #include <mutex>
 #include <shared_mutex>
 #include <thread>
 
-int value = 0;
-std::shared_mutex sm;
+static int value = 0;
+static std::shared_mutex sm;
 
 // multiple threads can read the value at the same time
-int get()
+static int get()
 {
-    std::shared_lock sl(sm);
+    std::shared_lock const sl(sm);
     return value;
 }
 
 // only one thread can write the value
-void increment()
+static void increment()
 {
-    std::unique_lock lk(sm);
+    std::unique_lock const lk(sm);
     ++value;
 }
 

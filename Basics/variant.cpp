@@ -22,7 +22,7 @@
 class MouseEvent
 {
 public:
-    void do_mouse_event_stuff() const
+    static void doMouseEventStuff()
     {
         std::cout << "Doing MouseEvent stuff\n";
     }
@@ -31,7 +31,7 @@ public:
 class KeyboardEvent
 {
 public:
-    void do_keyboard_event_stuff() const
+    static void doKeyboardEventStuff()
     {
         std::cout << "Doing KeyboardEvent stuff\n";
     }
@@ -40,7 +40,7 @@ public:
 class JoystickEvent
 {
 public:
-    void do_joystick_event_stuff() const
+    static void doJoystickEventStuff()
     {
         std::cout << "Doing JoystickEvent stuff\n";
     }
@@ -52,44 +52,44 @@ class NotAnEngineEvent
 };
 
 // Create a type to represent the events the engine can handle
-using Event = std::variant<MouseEvent, KeyboardEvent, JoystickEvent>;
+using t_Event = std::variant<MouseEvent, KeyboardEvent, JoystickEvent>;
 
 // To use with std::visit (see below)
 struct EventHandler
 {
     void operator()(const MouseEvent& e)
     {
-        e.do_mouse_event_stuff();
+        MouseEvent::doMouseEventStuff();
     }
 
     void operator()(const KeyboardEvent& e)
     {
-        e.do_keyboard_event_stuff();
+        KeyboardEvent::doKeyboardEventStuff();
     }
 
     void operator()(const JoystickEvent& e)
     {
-        e.do_joystick_event_stuff();
+        JoystickEvent::doJoystickEventStuff();
     }
 };
 
 int main()
 {
     // Create events
-    Event m = MouseEvent{};
-    Event k = KeyboardEvent{};
-    Event j = JoystickEvent{};
+    t_Event m = MouseEvent{};
+    t_Event k = KeyboardEvent{};
+    t_Event j = JoystickEvent{};
 
     // Test the type of the event manually
     if (std::holds_alternative<MouseEvent>(m))
     {
         auto e = std::get<MouseEvent>(m);
-        e.do_mouse_event_stuff();
+        MouseEvent::doMouseEventStuff();
     }
 
-    if (auto p = std::get_if<KeyboardEvent>(&k))
+    if (auto* p = std::get_if<KeyboardEvent>(&k))
     {
-        p->do_keyboard_event_stuff();
+        KeyboardEvent::doKeyboardEventStuff();
     }
 
     // With std::visit

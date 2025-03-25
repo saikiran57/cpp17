@@ -1,5 +1,6 @@
 #include <iomanip>  // std::setfill, std::setw
 #include <iostream>
+#include <string>
 
 int main()
 {
@@ -8,7 +9,7 @@ int main()
 
     std::cout << 77 << std::endl;
 
-    std::string str = "s";
+    std::string const str = "s";
 
     // setfill is G and width is set as 10
     // And std::left is used set str to left side

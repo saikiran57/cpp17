@@ -28,19 +28,19 @@
 #include <mutex>
 #include <thread>
 
-int value = 0;
-std::recursive_mutex rc;
+static int value = 0;
+static std::recursive_mutex rc;
 
-void func1()
+static void func1()
 {
-    std::lock_guard lc(rc);
+    std::lock_guard const lc(rc);
     value = 20;
     std::cout << "value in func1: " << value << "\n";
 }
 
-void func()
+static void func()
 {
-    std::lock_guard lc(rc);
+    std::lock_guard const lc(rc);
     value = 10;
     std::cout << "value in func: " << value << "\n";
     func1();

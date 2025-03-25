@@ -10,20 +10,20 @@
 
 class BigData  // inefficient to copy
 {
-    int data[1024]; /* some raw data */
+    int m_data[1024]; /* some raw data */
 
 public:
     explicit BigData(int i = 0)
     {
-        data[0] = i; /* ... */
+        m_data[0] = i; /* ... */
     }
     operator int() const
     {
-        return data[0];
+        return m_data[0];
     }
     BigData& operator=(int i)
     {
-        data[0] = i;
+        m_data[0] = i;
         return *this;
     }
     /* ... */

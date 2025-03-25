@@ -13,8 +13,9 @@
  * https://hackingcpp.com/cpp/std/algorithms/numeric.html#reduce
  */
 
-#include <algorithm>
+#include <cstdint>
 #include <execution>
+#include <functional>
 #include <iostream>
 #include <numeric>
 #include <vector>
@@ -22,7 +23,7 @@
 int main()
 {
     std::vector<uint32_t> vec(10);
-    std::iota(vec.begin(), vec.end(), 0);
+    std::iota(vec, , 0);
 
     // sum of all indices
     auto sum = std::reduce(vec.begin(), vec.end());  // v0+v1+v2....+vn = sum

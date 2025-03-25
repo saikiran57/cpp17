@@ -20,8 +20,8 @@
 // because both S.a and S.b can be allocated at any address
 struct S
 {
-    char a;  // size: 1, alignment: 1
-    char b;  // size: 1, alignment: 1
+    char m_a;  // size: 1, alignment: 1
+    char m_b;  // size: 1, alignment: 1
 };  // size: 2, alignment: 1
 
 // objects of type X must be allocated at 4-byte boundaries
@@ -29,23 +29,23 @@ struct S
 // because int's alignment requirement is (usually) 4
 struct X
 {
-    int n;   // size: 4, alignment: 4
-    char c;  // size: 1, alignment: 1
+    int m_n;   // size: 4, alignment: 4
+    char m_c;  // size: 1, alignment: 1
     // three bytes of padding bits
 };  // size: 8, alignment: 4
 
 struct B
 {
-    char mChar;      // size: 1
-    double mDouble;  // size: 8
-    int mInt;        // size: 4
+    char m_mChar;      // size: 1
+    double m_mDouble;  // size: 8
+    int m_mInt;        // size: 4
 };
 
 struct C
 {
-    double mDouble;  // size: 8
-    int mInt;        // size: 4
-    char mChar;      // size: 1
+    double m_mDouble;  // size: 8
+    int m_mInt;        // size: 4
+    char m_mChar;      // size: 1
 };
 
 int main()

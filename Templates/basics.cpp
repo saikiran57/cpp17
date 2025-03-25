@@ -12,7 +12,7 @@
 #include <iostream>
 
 template <typename T>
-void sum(T a, T b)
+static void sum(T a, T b)
 {
     T c = a + b;
     std::cout << "Sum:" << c << "\n";

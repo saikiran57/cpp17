@@ -10,21 +10,22 @@
  */
 
 #include <iostream>
+#include <string>
 
 template <typename T>
-void func(T v)
+static void func(T v)
 {
     std::cout << v << '\n';
 }
 
 template <typename T>
-void func(T* v)
+static void func(T* v)
 {
     std::cout << *v << '\n';
 }
 
 template <typename T>
-void func(const T* v)
+static void func(const T* v)
 {
     std::cout << *v << '\n';
 }

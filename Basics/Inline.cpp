@@ -44,8 +44,6 @@
  * static constexpr: Use for file-local constants or compile-time evaluated functions.
  */
 
-#include <iostream>
-
 namespace constants
 {
 inline constexpr auto PI{1.33333};

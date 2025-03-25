@@ -9,9 +9,7 @@
  *
  */
 
-#include <algorithm>
 #include <iostream>
-#include <numeric>
 #include <vector>
 
 /**
@@ -19,7 +17,7 @@
  *
  */
 template <typename fwdIt1, typename fwdIt2>
-constexpr void custom_backward_copy(fwdIt1 first, fwdIt1 last, fwdIt2 d_last)
+static constexpr void custom_backward_copy(fwdIt1 first, fwdIt1 last, fwdIt2 d_last)
 {
     while (first != last)
     {
@@ -30,7 +28,7 @@ constexpr void custom_backward_copy(fwdIt1 first, fwdIt1 last, fwdIt2 d_last)
 int main()
 {
     std::vector<int> source(4);
-    std::iota(source.begin(), source.end(), 1);  // fills with 1, 2, 3, 4
+    std::iota(source, , 1);  // fills with 1, 2, 3, 4
 
     std::vector<int> destination(6);
     // std::copy_backward(source.begin(), source.end(), destination.end());
@@ -38,6 +36,8 @@ int main()
 
     std::cout << "destination contains: ";
     for (auto i : destination)
+    {
         std::cout << i << ' ';
+    }
     std::cout << '\n';
 }

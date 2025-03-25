@@ -2,24 +2,26 @@
 
 #include <cstdarg>
 #include <iostream>
-#include <memory>
+#include <tuple>
 
 template <typename TupleT>
-void printTupleApply(const TupleT& tp)
+static void printTupleApply(const TupleT& tp)
 {
     std::cout << "(";
-    if constexpr (std::tuple_size_v<TupleT> >= 0u)
+    if constexpr (std::tuple_size_v<TupleT> >= 0U)
+    {
         std::apply(
             [](const auto& a0, const auto&... a1) {
                 std::cout << a0;
                 ((std::cout << ", " << a1), ...);
             },
             tp);
+    }
     std::cout << ")";
 }
 
 int main()
 {
-    std::tuple tp{10, 20, 3.14, 42, "hello"};
+    std::tuple const tp{10, 20, 3.14, 42, "hello"};
     printTupleApply(tp);
 }

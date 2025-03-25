@@ -14,7 +14,7 @@
 #include <iostream>
 
 template <typename T>
-struct foo
+struct Foo
 {
     template <typename U>
     void bar()
@@ -35,27 +35,27 @@ struct foo
 };
 
 template <typename T>
-struct foo_base
+struct FooBase
 {
     template <typename U>
-    void base_bar()
+    void baseBar()
     {
         std::cout << "Base bar()\n";
     }
 };
 
 template <typename T>
-struct foobar : public foo_base<T>
+struct Foobar : public FooBase<T>
 {
     template <typename U>
     void bar()
     {
-        this->template base_bar<U>();
+        this->template baseBar<U>();
     }
 };
 
 template <typename T>
-void func(foo<T> f)
+static void func(Foo<T> f)
 {
     std::cout << "func()\n";
     f.template bar<float>();
@@ -63,20 +63,20 @@ void func(foo<T> f)
 }
 
 template <typename T>
-void func(foo<T>* fp)
+static void func(Foo<T>* fp)
 {
     fp->template bar<float>();
 }
 
 template <typename T>
-void func()
+static void func()
 {
-    foo<T>::template sbar<float>();
+    Foo<T>::template sbar<float>();
 }
 
 int main()
 {
-    foo<int> fooObj;
+    Foo<int> fooObj;
 
     fooObj.bar<float>();
 
@@ -84,7 +84,7 @@ int main()
     func(&fooObj);
     func<int>();
 
-    foobar<int> fooBarObj;
+    Foobar<int> fooBarObj;
 
     fooBarObj.template bar<float>();
 

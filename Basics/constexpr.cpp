@@ -20,7 +20,7 @@
 static constexpr auto ARRAY_SIZE = 4;
 static constexpr std::array<char, ARRAY_SIZE> a{'1', '2', '3', '4'};
 
-constexpr auto get(int n)
+static constexpr auto get(int n)
 {
     return a[n];
 }

@@ -18,52 +18,52 @@ class Foo
 public:
     Foo()
     {
-        this->value = 0;
+        this->m_value = 0;
     }
 
-    Foo get_copy()
+    Foo getCopy()
     {
         return *this;
     }
 
-    Foo& get_copy_as_reference()
+    Foo& getCopyAsReference()
     {
         return *this;
     }
 
-    Foo* get_pointer()
+    Foo* getPointer()
     {
         return this;
     }
 
     void increment()
     {
-        this->value++;
+        this->m_value++;
     }
 
-    void print_value()
+    void printValue() const
     {
-        std::cout << this->value << std::endl;
+        std::cout << this->m_value << std::endl;
     }
 
 private:
-    int value;
+    int m_value;
 };
 
 int main()
 {
     Foo foo;
     foo.increment();
-    foo.print_value();
+    foo.printValue();
 
-    foo.get_copy().increment();
-    foo.print_value();
+    foo.getCopy().increment();
+    foo.printValue();
 
-    foo.get_copy_as_reference().increment();
-    foo.print_value();
+    foo.getCopyAsReference().increment();
+    foo.printValue();
 
-    foo.get_pointer()->increment();
-    foo.print_value();
+    foo.getPointer()->increment();
+    foo.printValue();
 
     return 0;
 }

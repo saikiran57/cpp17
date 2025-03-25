@@ -1,4 +1,3 @@
-#include <algorithm>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -6,34 +5,34 @@
 // TriviallyCopyable structure
 struct MyStruct
 {
-    int n;
-    double d;
+    int m_n;
+    double m_d;
 };
 
 struct MyStruct2
 {
-    int n;
-    double d;
-    std::string s;
+    int m_n{};
+    double m_d{};
+    std::string m_s;
 };
 
 int main()
 {
-    std::vector<MyStruct> v1{{1, 1.0}, {2, 2.0}};
-    std::vector<MyStruct> v2{2};
-    std::copy(v1.begin(), v1.end(), v2.begin());  // calls memmove()
+    std::vector<MyStruct> const v1{{.m_n = 1, .m_d = 1.0}, {.m_n = 2, .m_d = 2.0}};
+    std::vector<MyStruct> const v2{2};
+    std::ranges::copy(v1, , v2.begin());  // calls memmove()
 
     for (const auto& o : v2)
     {
-        std::cout << "After v2 copy, n:" << o.n << ", d:" << o.d << std::endl;
+        std::cout << "After v2 copy, n:" << o.m_n << ", d:" << o.m_d << std::endl;
     }
-    std::vector<MyStruct2> v3{{1, 1.0, "Hello"}, {2, 2.0, "World"}};
-    std::vector<MyStruct2> v4{2};
-    std::copy(v3.begin(), v3.end(), v4.begin());  // Does not call memmove()
+    std::vector<MyStruct2> const v3{{.m_n = 1, .m_d = 1.0, .m_s = "Hello"}, {.m_n = 2, .m_d = 2.0, .m_s = "World"}};
+    std::vector<MyStruct2> const v4{2};
+    std::ranges::copy(v3, , v4.begin());  // Does not call memmove()
 
     for (const auto& o : v4)
     {
-        std::cout << "After v4 copy, n:" << o.n << ", d:" << o.d << ", s:" << o.s << std::endl;
+        std::cout << "After v4 copy, n:" << o.m_n << ", d:" << o.m_d << ", s:" << o.m_s << std::endl;
     }
 
     return 0;

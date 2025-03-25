@@ -7,31 +7,31 @@
 template <typename T>
 struct Iterator
 {
-    using iterator_category = typename std::vector<T>::iterator::iterator_category;
-    using difference_type = typename std::vector<T>::iterator::difference_type;
-    using value_type = typename std::vector<T>::iterator::value_type;
-    using pointer = typename std::vector<T>::iterator::pointer;
-    using reference = typename std::vector<T>::iterator::reference;
+    using t_IteratorCategory = typename std::vector<T>::iterator::iterator_category;
+    using t_DifferenceType = typename std::vector<T>::iterator::difference_type;
+    using t_ValueType = typename std::vector<T>::iterator::value_type;
+    using t_Pointer = typename std::vector<T>::iterator::pointer;
+    using t_Reference = typename std::vector<T>::iterator::reference;
 
     Iterator() = default;
 
     explicit Iterator(typename std::vector<T>::iterator it, typename std::vector<T>::iterator realEnd) noexcept
-        : it_(it), end_(realEnd)
+        : m_it(it), m_end(realEnd)
     {
     }
 
-    reference operator*() noexcept
+    t_Reference operator*() noexcept
     {
-        return *it_;
+        return *m_it;
     }
-    pointer operator->() noexcept
+    t_Pointer operator->() noexcept
     {
-        return it_.operator->();
+        return m_it.operator->();
     }
 
     Iterator& operator++() noexcept
     {
-        it_++;
+        m_it++;
         return *this;
     }
     Iterator operator++(int) noexcept
@@ -43,7 +43,7 @@ struct Iterator
 
     friend bool operator==(const Iterator& a, const Iterator& b) noexcept
     {
-        return a.it_ == b.it_ && a.end_ == b.end_;
+        return a.m_it == b.m_it && a.m_end == b.m_end;
     };
 
     // not needed in C++20... op rewrite rules
@@ -53,36 +53,36 @@ struct Iterator
     };
 
 private:
-    typename std::vector<T>::iterator end_;
-    typename std::vector<T>::iterator it_;
+    typename std::vector<T>::iterator m_end;
+    typename std::vector<T>::iterator m_it;
 };
 
 template <typename T>
 class MyVec
 {
-    using iterator = Iterator<T>;
+    using t_Iterator = Iterator<T>;
 
 public:
     MyVec() = default;
-    MyVec(const std::vector<T>& vec) : data_(vec) {}
+    MyVec(const std::vector<T>& vec) : m_data(vec) {}
 
     size_t size() const
     {
-        return data_.size();
+        return m_data.size();
     }
 
-    iterator begin() noexcept
+    t_Iterator begin() noexcept
     {
-        return iterator(data_.begin(), data_.end());
+        return t_Iterator(m_data.begin(), m_data.end());
     }
 
-    iterator end() noexcept
+    t_Iterator end() noexcept
     {
-        return iterator(data_.end(), data_.end());
+        return t_Iterator(m_data.end(), m_data.end());
     }
 
 private:
-    std::vector<T> data_;
+    std::vector<T> m_data;
 };
 
 int main()

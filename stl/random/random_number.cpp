@@ -10,11 +10,13 @@
  */
 
 #include <algorithm>
+#include <cstdint>
 #include <iostream>
 #include <iterator>
 #include <random>
+#include <vector>
 
-int randomNumberInt(int low = 0, int high = 100)
+static int randomNumberInt(int low = 0, int high = 100)
 {
     // Create random device to seed the random number engine
     std::random_device rd;
@@ -26,12 +28,12 @@ int randomNumberInt(int low = 0, int high = 100)
     std::uniform_int_distribution<> dist(low, high);
 
     // generate a random number
-    int randomNumber = dist(gen);
+    int const randomNumber = dist(gen);
 
     return randomNumber;
 }
 
-double randomNumberReal(double low = 0.0, double high = 1.0)
+static double randomNumberReal(double low = 0.0, double high = 1.0)
 {
     // Create random device to seed the random number engine
     std::random_device rd;
@@ -43,14 +45,14 @@ double randomNumberReal(double low = 0.0, double high = 1.0)
     std::uniform_real_distribution<> dist(low, high);
 
     // generate a random number
-    double randomNumber = dist(gen);
+    double const randomNumber = dist(gen);
 
     return randomNumber;
 }
 
-void generate_random_vector(long size)
+static void generate_random_vector(long size)
 {
-    std::vector<int64_t> vec{[n = size]() {
+    std::vector<int64_t> const vec{[n = size]() {
         std::vector<int64_t> v;
         v.reserve(n);
         // Create random device to seed the random number engine
@@ -67,7 +69,7 @@ void generate_random_vector(long size)
     }()};
 
     std::cout << "vec size: " << vec.size() << "\n";
-    std::copy(vec.begin(), vec.end(), std::ostream_iterator<int>(std::cout, ", "));
+    std::ranges::copy(vec, , std::ostream_iterator<int>(std::cout, ", "));
 }
 
 int main()

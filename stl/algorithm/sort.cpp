@@ -38,7 +38,7 @@ void testFunc()
     print("standard sort non increasing:", v2);
 
     // custom function object
-    struct customLess
+    struct CustomLess
     {
         bool operator()(int a, int b)
         {
@@ -46,7 +46,7 @@ void testFunc()
         }
     };
 
-    std::sort(v2.begin(), v2.end(), customLess());
+    std::sort(v2.begin(), v2.end(), CustomLess());
     print("custom object", v2);
 
     // lambda call

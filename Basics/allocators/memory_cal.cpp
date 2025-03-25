@@ -9,8 +9,11 @@
  *
  */
 
-#include <iomanip>
+#include <array>
+#include <cstddef>
+#include <cstdlib>
 #include <iostream>
+#include <string>
 #include <vector>
 
 #include <memory_resource>
@@ -19,7 +22,7 @@ static int number_of_new_calls = 0;
 static int number_of_delete_calls = 0;
 static size_t memory_size = 0;
 
-void reset_counter()
+static void reset_counter()
 {
     number_of_new_calls = 0;
     number_of_delete_calls = 0;
@@ -28,18 +31,16 @@ void reset_counter()
 
 void* operator new(size_t size)
 {
-    void* ptr = malloc(size);
+    void const* ptr = malloc(size);
 
-    if (ptr)
+    if (ptr != nullptr)
     {
         number_of_new_calls++;
         memory_size += size;
         return ptr;
     }
-    else
-    {
-        throw std::bad_alloc{};
-    }
+
+    throw std::bad_alloc{};
 }
 
 void operator delete(void* ptr) noexcept
@@ -48,7 +49,7 @@ void operator delete(void* ptr) noexcept
     std::free(ptr);
 }
 
-void new_delete_summary()
+static void new_delete_summary()
 {
     std::cout << std::dec << "#new: " << number_of_new_calls << " #delete: " << number_of_delete_calls
               << " #bytes: " << memory_size << std::endl;
@@ -80,40 +81,42 @@ void new_delete_summary()
 //     std::cout << std::endl;
 // }
 
-void one_explicit_new_and_delete()
+static void one_explicit_new_and_delete()
 {
-    int* pi = new int;
+    int const* pi = new int;
     delete pi;
 }
 
-void vector_with_implicit_heap_allocations()
+static void vector_with_implicit_heap_allocations()
 {
     std::vector<int> v;
     // v.reserve(10);
     for (int i = 0; i < 10; i++)
+    {
         v.push_back(i);
+    }
 }
 
-void vector_with_stack_memory(int n)
-{                                               // The only difference are the first three statements:
-    std::array<unsigned char, 100'000> memory;  // local definition
-                                                // use memory as memory for the vector and the strings:
+static void vector_with_stack_memory(int n)
+{                                                 // The only difference are the first three statements:
+    std::array<unsigned char, 100'000> memory{};  // local definition
+                                                  // use memory as memory for the vector and the strings:
     std::pmr::monotonic_buffer_resource pool{memory.data(), memory.size()};
     std::pmr::vector<std::pmr::string> container{&pool};  // see 7.
     // work with the container
     for (int i = 0; i < n; ++i)
     {
-        container.push_back("A string with more than 16 chars");
+        container.emplace_back("A string with more than 16 chars");
     }
 }  // #new: 0 #delete: 0 #bytes: 0
 
-void vector_with_heap_memory(int n)
+static void vector_with_heap_memory(int n)
 {
     std::vector<std::string> container;
     // work with the container
     for (int i = 0; i < n; ++i)
     {
-        container.push_back("A string with more than 16 chars");
+        container.emplace_back("A string with more than 16 chars");
     }
 }  // #new: 0 #delete: 0 #bytes: 0
 

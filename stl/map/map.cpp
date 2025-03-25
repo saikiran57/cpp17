@@ -17,13 +17,13 @@
  */
 struct Abc
 {
-    std::string name;
-    int a;
+    std::string m_name;
+    int m_a;
 
     // it must be overloaded and const
     bool operator<(const Abc& rhs) const
     {
-        return this->a < rhs.a;
+        return this->m_a < rhs.m_a;
     }
 };
 
@@ -40,14 +40,14 @@ void mapFuncComplex()
 
     for (auto [obj, val] : m)
     {
-        std::cout << obj.a << ":" << obj.name << ":" << val << "\n";
+        std::cout << obj.m_a << ":" << obj.m_name << ":" << val << "\n";
     }
 
     auto pos = m.find(ob2);
     if (pos != m.end())
         ;
     {
-        std::cout << "Value found: " << pos->first.a << ":" << pos->first.name << ":" << pos->second << "\n";
+        std::cout << "Value found: " << pos->first.m_a << ":" << pos->first.m_name << ":" << pos->second << "\n";
     }
 }
 

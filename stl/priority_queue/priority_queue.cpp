@@ -16,19 +16,24 @@
  *
  */
 
+#include <functional>
 #include <iostream>
 #include <queue>
+#include <string_view>
+#include <vector>
 
 template <typename T>
-void pop_println(std::string_view rem, T& pq)
+static void pop_println(std::string_view rem, T& pq)
 {
     std::cout << rem << ": ";
     for (; !pq.empty(); pq.pop())
+    {
         std::cout << pq.top() << ' ';
+    }
     std::cout << '\n';
 }
 
-void max_heap(std::vector<int>& data)
+static void max_heap(std::vector<int>& data)
 {
     // direct construction
     std::priority_queue<int> maxHeap(data.begin(), data.end());
@@ -46,7 +51,7 @@ void max_heap(std::vector<int>& data)
     pop_println("max heap3", maxHeap3);
 
     // custom function object comparator
-    struct customLess
+    struct CustomLess
     {
         bool operator()(int a, int b)
         {
@@ -54,13 +59,13 @@ void max_heap(std::vector<int>& data)
         }
     };
 
-    std::priority_queue maxHeap4(data.begin(), data.end(), customLess{});
+    std::priority_queue maxHeap4(data.begin(), data.end(), CustomLess{});
     pop_println("max heap4", maxHeap4);
 }
 
-void min_heap(std::vector<int>& data)
+static void min_heap(std::vector<int>& data)
 {
-    std::priority_queue<int, std::vector<int>, std::greater<int>> minHeap(std::greater<int>(), data);
+    std::priority_queue<int, std::vector<int>, std::greater<>> minHeap(std::greater<int>(), data);
     pop_println("min heap", minHeap);
 }
 

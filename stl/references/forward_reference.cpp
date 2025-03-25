@@ -16,7 +16,7 @@
  * @param arg
  */
 template <class T>
-void wrapper(T&& arg)
+static void wrapper(T&& arg)
 {
     // arg is always lvalue
     foo(std::forward<T>(arg));  // Forward as lvalue or as rvalue, depending on T

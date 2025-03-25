@@ -4,10 +4,10 @@
 
 struct Event
 {
-    int priority;
-    std::string data;
+    int m_priority;
+    std::string m_data;
 
-    Event(int p, const std::string& d) : priority(p), data(d) {}
+    Event(int p, const std::string& d) : m_priority(p), m_data(d) {}
 
     /**
      * @brief comparison between two events
@@ -19,12 +19,12 @@ struct Event
      */
     friend constexpr bool operator<(const Event& lhs, const Event& rhs) noexcept
     {
-        return lhs.priority < rhs.priority;
+        return lhs.m_priority < rhs.m_priority;
     }
 
     friend std::ostream& operator<<(std::ostream& os, const Event& event) noexcept
     {
-        return os << "priority:" << event.priority << " data:" << event.data << "\n";
+        return os << "priority:" << event.m_priority << " data:" << event.m_data << "\n";
     }
 };
 

@@ -9,6 +9,8 @@
  *
  */
 
+#include <cstddef>
+#include <string>
 #if PARALLEL
 #include <execution>
 #define PAR std::execution::par,
@@ -20,7 +22,6 @@
 #include <functional>
 #include <iostream>
 #include <iterator>
-#include <locale>
 #include <numeric>
 #include <vector>
 
@@ -32,7 +33,7 @@
 
 // to parallelize non-associate accumulative operation, you'd better choose
 // transform_reduce instead of reduce; e.g., a + b * b != b + a * a
-void print_sum_squared(long const num)
+static void print_sum_squared(long const num)
 {
     // std::cout.imbue(std::locale{"en_US.UTF8"});
     std::cout << "num = " << num << '\n';
@@ -42,13 +43,13 @@ void print_sum_squared(long const num)
         std::vector<long> v;
         v.reserve(n);
         std::generate_n(std::back_inserter(v), n, [i = 0]() mutable {
-            return 1 + i++ % 4;
+            return 1 + (i++ % 4);
         });
         return v;
     }()};
 
     auto squared_sum = [](auto sum, auto val) {
-        return sum + val * val;
+        return sum + (val * val);
     };
 
     auto sum1 = std::accumulate(v.cbegin(), v.cend(), 0L, squared_sum);

@@ -68,11 +68,11 @@ public:
     // void setData(vector<int>&& data) { m_data = move(data); }
     void setData(vector<int> data)
     {
-        m_data = move(data);
+        m_mData = std::move(data);
     }
 
 private:
-    vector<int> m_data;
+    vector<int> m_mData;
 };
 
 int main()

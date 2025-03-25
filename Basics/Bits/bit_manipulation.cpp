@@ -1,10 +1,14 @@
 #include <climits>  // For CHAR_BIT
+#include <cstdint>
 #include <iostream>
 
 template <typename T>
-int countTrailingZeros(T num)
+static int countTrailingZeros(T num)
 {
-    if (num == 0) return sizeof(num) * CHAR_BIT;  // All bits are zero
+    if (num == 0)
+    {
+        return sizeof(num) * CHAR_BIT;  // All bits are zero
+    }
 
     int count = 0;
 
@@ -20,7 +24,7 @@ int countTrailingZeros(T num)
 
 int main()
 {
-    uint8_t num = 0;  // Example number
+    uint8_t const num = 0;  // Example number
     std::cout << "Number of trailing zeros in " << num << " is: " << countTrailingZeros(num) << std::endl;
     return 0;
 }

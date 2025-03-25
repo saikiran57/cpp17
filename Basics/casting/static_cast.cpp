@@ -14,10 +14,10 @@
 int main()
 {
     int a = 65;
-    char b = 'C';
+    char const b = 'C';
 
     // reinterpret cast can only be used in unrelated pointer types
-    char* p = reinterpret_cast<char*>(&a);
+    char const* p = reinterpret_cast<char*>(&a);
 
     std::cout << "a:" << a << " b:" << b << "\n";
 }
