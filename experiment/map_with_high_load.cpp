@@ -7,6 +7,8 @@
  *
  * @copyright Copyright (c) 2025
  *
+ *  g++ -O3 -std=c++17 map_with_high_load.cpp -o map_with_high_load
+ *
  */
 
 #include "execution_timer.hpp"
@@ -166,7 +168,7 @@ DescriptorScriptPubKeyMan* CWallet::getDescriptorScriptPubKeyManOld(const std::s
     for (const auto& spk_man_pair : m_mSpkManagers)
     {
         // Try to downcast to DescriptorScriptPubKeyMan then check if the descriptors match
-        auto const* spk_manager = dynamic_cast<DescriptorScriptPubKeyMan*>(spk_man_pair.second.get());
+        auto spk_manager = dynamic_cast<DescriptorScriptPubKeyMan*>(spk_man_pair.second.get());
         if (spk_manager != nullptr && spk_manager->hasWalletDescriptor(myrandomAddress))
         {
             return spk_manager;
@@ -199,7 +201,7 @@ DescriptorScriptPubKeyMan* CWallet::getDescriptorScriptPubKeyManNew(const Uint25
 
     if (spk_man_pair != m_mSpkManagers.end())
     {
-        auto const* spk_manager = dynamic_cast<DescriptorScriptPubKeyMan*>(spk_man_pair->second.get());
+        auto spk_manager = dynamic_cast<DescriptorScriptPubKeyMan*>(spk_man_pair->second.get());
         if (spk_manager != nullptr && spk_manager->hasWalletDescriptor(myrandomAddress))
         {
             return spk_manager;
