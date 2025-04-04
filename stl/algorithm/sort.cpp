@@ -10,11 +10,13 @@
  */
 
 #include <algorithm>
+#include <functional>
 #include <iostream>
+#include <string_view>
 #include <vector>
 
 template <typename T>
-void print(const std::string_view sv, T& t)
+static void print(const std::string_view sv, T& t)
 {
     std::cout << sv;
     for (auto&& i : t)
@@ -24,7 +26,7 @@ void print(const std::string_view sv, T& t)
     std::cout << "\n";
 }
 
-void testFunc()
+static void testFunc()
 {
     std::vector<int> v{1, 23, 0, -1, -2};
 

@@ -1,5 +1,4 @@
 #include <string>
-#include <utility>
 
 /**
  * Basic class implementation
@@ -9,14 +8,14 @@ class Basic
 {
 public:
     // constructor
-    explicit Basic(int a, std::string str) : m_a(a), m_str(str) {}
+    explicit Basic(int a, std::string str) : m_a(a), m_str(std::move(str)) {}
 
     // destructor
     ~Basic() = default;
 
     // copy constructor
     // copy assignment
-    // move constructo
+    // move constructor
     // move assignment
 
     // operator overloading

@@ -1,13 +1,14 @@
 #include <iostream>
 #include <queue>
 #include <string>
+#include <utility>
 
 struct Event
 {
     int m_priority;
     std::string m_data;
 
-    Event(int p, const std::string& d) : m_priority(p), m_data(d) {}
+    Event(int p, std::string d) : m_priority(p), m_data(std::move(d)) {}
 
     /**
      * @brief comparison between two events
@@ -32,8 +33,8 @@ int main()
 {
     using namespace std::string_literals;
     std::priority_queue<Event> pqEvents;
-    std::string temp = "sdsdsdsdsds";
-    pqEvents.push(Event{1, "ssdsd"});
+    std::string const temp = "sdsdsdsdsds";
+    pqEvents.emplace(1, "ssdsd");
     pqEvents.emplace(23, temp);
 
     while (!pqEvents.empty())

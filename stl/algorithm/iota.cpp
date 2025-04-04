@@ -10,14 +10,14 @@
 
 class BigData  // inefficient to copy
 {
-    int m_data[1024]; /* some raw data */
+    int m_data[1024]{}; /* some raw data */
 
 public:
     explicit BigData(int i = 0)
     {
         m_data[0] = i; /* ... */
     }
-    operator int() const
+    explicit operator int() const
     {
         return m_data[0];
     }
@@ -43,11 +43,15 @@ int main()
 
     std::cout << "Original contents of the list l:\t";
     for (auto const& n : l)
+    {
         std::cout << std::setw(2) << n << ' ';
+    }
     std::cout << '\n';
 
     std::cout << "Contents of l, viewed via shuffled v:\t";
     for (auto const i : v)
+    {
         std::cout << std::setw(2) << *i << ' ';
+    }
     std::cout << '\n';
 }

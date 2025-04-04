@@ -14,7 +14,7 @@ int main()
         vec.resize(NUMBER_OF_ELEMENTS);  // very fast
 
         vec[1024] = 47;
-        int j = vec[1024];
+        int const j = vec[1024];
         vec.push_back(23);
     }
     auto end = std::chrono::system_clock::now();

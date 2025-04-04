@@ -1,7 +1,5 @@
-#include <algorithm>
+#include <cstddef>
 #include <iostream>
-#include <memory>
-#include <random>
 #include <vector>
 
 template <typename T>
@@ -64,9 +62,9 @@ class MyVec
 
 public:
     MyVec() = default;
-    MyVec(const std::vector<T>& vec) : m_data(vec) {}
+    explicit MyVec(const std::vector<T>& vec) : m_data(vec) {}
 
-    size_t size() const
+    [[nodiscard]] size_t size() const
     {
         return m_data.size();
     }
@@ -90,5 +88,7 @@ int main()
     MyVec<int> vec{std::vector{1, 2, 3, 4}};
 
     for (auto& elem : vec)
+    {
         std::cout << elem << ", ";
+    }
 }

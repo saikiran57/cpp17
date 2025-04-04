@@ -12,10 +12,14 @@
 #pragma once
 
 #include <algorithm>
+#include <cstddef>
 #include <cstdint>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
+#include <stdexcept>
+#include <string>
+#include <string_view>
 #include <vector>
 
 namespace experiment
@@ -40,18 +44,18 @@ public:
      * @param data
      * @param size
      */
-    ByteArray(const uint8_t* data, std::size_t size) : m_ByteArray(data, data + size) {}
+    ByteArray(const uint8_t* data, std::size_t size) : m_byteArray(data, data + size) {}
 
     /**
      * @brief Construct a new Byte Array object from vector of uint8_t
      *
      * @param byteArray
      */
-    ByteArray(const std::vector<uint8_t>& byteArray) : m_ByteArray(byteArray) {}
+    explicit ByteArray(const std::vector<uint8_t>& byteArray) : m_byteArray(byteArray) {}
 
-    ByteArray(const std::string& hexString)
+    explicit ByteArray(const std::string& hexString)
     {
-        load_from_hex(hexString);
+        loadFromHex(hexString);
     }
 
     /**
@@ -60,9 +64,9 @@ public:
      * @param s Hex string. Example: "aabbccdd" or "AABBDDCC" or "AA BB CC DD"
      * @return Success. If fail - previous data will not be erased.
      */
-    bool load_from_hex(const std::string& s)
+    bool loadFromHex(const std::string& s)
     {
-        return load_from_hex(std::string_view(s));
+        return loadFromHex(std::string_view(s));
     }
 
     /**
@@ -71,7 +75,7 @@ public:
      * @param sv Hex string view. Example: "aabbccdd" or "AABBDDCC" or "AA BB CC DD"
      * @return Success. If fail - previous data will not be erased.
      */
-    bool load_from_hex(const std::string_view& sv)
+    bool loadFromHex(const std::string_view& sv)
     {
         static auto validator = [](char c) {
             return (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F') || (c >= '0' && c <= '9');
@@ -82,7 +86,7 @@ public:
             {
                 return static_cast<uint8_t>(symbol - '0');
             }
-            else if (symbol >= 'A' && symbol <= 'F')
+            if (symbol >= 'A' && symbol <= 'F')
             {
                 return static_cast<uint8_t>(symbol - 'A' + 10);
             }
@@ -95,7 +99,7 @@ public:
         };
 
         // Checking string
-        auto found = std::find_if(sv.begin(), sv.end(), [](char c) {
+        const auto* found = std::find_if(sv.begin(), sv.end(), [](char c) {
             return (c < 'a' || c > 'f') && (c < 'A' || c > 'F') && (c < '0' || c > '9') && (c != ' ');
         });
 
@@ -107,8 +111,8 @@ public:
         // Parsing
         auto count = std::count_if(sv.begin(), sv.end(), validator);
 
-        m_ByteArray.clear();
-        m_ByteArray.reserve(count);
+        m_byteArray.clear();
+        m_byteArray.reserve(count);
 
         bool isFirst = true;
         uint8_t firstValue = 0;
@@ -128,7 +132,7 @@ public:
             }
             else
             {
-                m_ByteArray.push_back(std::uint8_t(firstValue * 16 + char2int(symbol)));
+                m_byteArray.push_back(std::uint8_t((firstValue * 16) + char2int(symbol)));
 
                 isFirst = true;
             }
@@ -157,13 +161,13 @@ public:
     ByteArray& operator+(const ByteArray& other) noexcept
     {
         auto otherData = other.data();
-        m_ByteArray.insert(m_ByteArray.begin(), otherData.begin(), otherData.end());
+        m_byteArray.insert(m_byteArray.begin(), otherData.begin(), otherData.end());
         return *this;
     }
 
     ByteArray& append(const std::vector<uint8_t>& data) noexcept
     {
-        m_ByteArray.insert(m_ByteArray.begin(), data.begin(), data.end());
+        m_byteArray.insert(m_byteArray.begin(), data.begin(), data.end());
         return *this;
     }
 
@@ -174,21 +178,21 @@ public:
      */
     [[nodiscard]] std::vector<uint8_t> data() const noexcept
     {
-        return m_ByteArray;
+        return m_byteArray;
     }
 
     [[nodiscard]] size_t size() const noexcept
     {
-        return m_ByteArray.size();
+        return m_byteArray.size();
     }
 
-    std::string to_string(bool upperCase = true, bool prefix = true) const noexcept
+    [[nodiscard]] std::string toString(bool upperCase = true, bool prefix = true) const noexcept
     {
         std::stringstream ss;
 
         ss << (upperCase ? std::uppercase : std::nouppercase) << (prefix ? "0x" : "");
 
-        for (auto&& byte : m_ByteArray)
+        for (auto&& byte : m_byteArray)
         {
             ss << (upperCase ? std::uppercase : std::nouppercase) << std::setfill('0') << std::setw(2) << std::hex
                << static_cast<int>(byte);
@@ -198,6 +202,6 @@ public:
     }
 
 private:
-    std::vector<uint8_t> m_ByteArray;  ///< internal ByteArray representation
+    std::vector<uint8_t> m_byteArray;  ///< internal ByteArray representation
 };
 }  // namespace experiment

@@ -57,17 +57,17 @@ using t_Event = std::variant<MouseEvent, KeyboardEvent, JoystickEvent>;
 // To use with std::visit (see below)
 struct EventHandler
 {
-    void operator()(const MouseEvent& e)
+    void operator()(const MouseEvent& /*e*/)
     {
         MouseEvent::doMouseEventStuff();
     }
 
-    void operator()(const KeyboardEvent& e)
+    void operator()(const KeyboardEvent& /*e*/)
     {
         KeyboardEvent::doKeyboardEventStuff();
     }
 
-    void operator()(const JoystickEvent& e)
+    void operator()(const JoystickEvent& /*e*/)
     {
         JoystickEvent::doJoystickEventStuff();
     }
@@ -93,7 +93,7 @@ int main()
     }
 
     // With std::visit
-    EventHandler handler;
+    EventHandler const handler;
 
     std::visit(handler, m);
     std::visit(handler, k);

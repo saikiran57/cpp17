@@ -20,7 +20,7 @@ struct Node
 // };
 
 // lambda function
-auto customLess = [](Node& l, Node& r) {
+static auto customLess = [](Node& l, Node& r) {
     return l.m_sum < r.m_sum && l.m_element < r.m_element;
 };
 
@@ -41,7 +41,7 @@ struct CustomLess
 //     }
 // }
 
-void print_pq(std::priority_queue<Node>& pq)
+static void print_pq(std::priority_queue<Node>& pq)
 {
     while (!pq.empty())
     {

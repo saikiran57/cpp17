@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <map>
+#include <string>
 
 /*
  * https://www.geeksforgeeks.org/c-map-key-user-define-data-type/
@@ -27,12 +28,12 @@ struct Abc
     }
 };
 
-void mapFuncComplex()
+static void mapFuncComplex()
 {
     std::map<Abc, int> m;
-    Abc ob1{"abc", 1};
-    Abc ob2{"bbc", 2};
-    Abc ob3{"aaa", 3};
+    Abc const ob1{"abc", 1};
+    Abc const ob2{"bbc", 2};
+    Abc const ob3{"aaa", 3};
 
     m.insert({ob1, 1});
     m.insert({ob2, 2});
@@ -45,7 +46,6 @@ void mapFuncComplex()
 
     auto pos = m.find(ob2);
     if (pos != m.end())
-        ;
     {
         std::cout << "Value found: " << pos->first.m_a << ":" << pos->first.m_name << ":" << pos->second << "\n";
     }

@@ -11,14 +11,15 @@
 
 #include <algorithm>
 #include <array>
+#include <functional>
 #include <iostream>
+#include <iterator>
 #include <map>
 #include <numeric>
-#include <queue>
-#include <stack>
+#include <string>
 #include <vector>
 
-void print(const std::vector<int>& v, const std::string& name)
+static void print(const std::vector<int>& v, const std::string& name)
 {
     std::cout << "\n " << name;
     for (auto&& i : v)
@@ -89,7 +90,7 @@ int main()
     std::cout << "Max element found at index " << std::distance(v1.cbegin(), max_elementItr1) << " has value "
               << *max_elementItr1 << '\n';
 
-    std::vector strList{"abc", "def", "ghijk"};
+    std::vector const strList{"abc", "def", "ghijk"};
     auto max_elementItr2 = std::max_element(strList.cbegin(), strList.cend());
     std::cout << "Max element found at index " << std::distance(strList.cbegin(), max_elementItr2) << " has value "
               << *max_elementItr2 << '\n';
@@ -101,8 +102,8 @@ int main()
 
     // minmax returns the smaller and larger of two elements
     // don't pass temporary values
-    int n = 10000;
-    int m = 100;
+    int const n = 10000;
+    int const m = 100;
     auto [mm, xx] = std::minmax(n, m);
     std::cout << mm << ": " << xx << "\n";
 

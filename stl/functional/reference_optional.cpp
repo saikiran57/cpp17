@@ -18,25 +18,30 @@
 #include <iostream>
 #include <optional>
 #include <string>
+#include <utility>
 
 struct Employee
 {
-    std::string name{};  // expensive to copy
-    int id;
+    std::string m_name;  // expensive to copy
+    int m_id{};
     Employee() = default;
-    Employee(std::string name, int id) : name(name), id(id) {}
-    Employee(const Employee& e)
+    Employee(std::string name, int id) : m_name(std::move(name)), m_id(id) {}
+    Employee(const Employee& /*e*/)
     {
         std::cout << "copy\n";
     }
 };
 
-void printEmployeeID(const std::optional<std::reference_wrapper<Employee>>& e = std::nullopt)
+static void printEmployeeID(const std::optional<std::reference_wrapper<Employee>>& e = std::nullopt)
 {
     if (e)
-        std::cout << "Your ID number is " << e->get().id << ".\n";
+    {
+        std::cout << "Your ID number is " << e->get().m_id << ".\n";
+    }
     else
+    {
         std::cout << "Your ID number is not known.\n";
+    }
 }
 
 int main()

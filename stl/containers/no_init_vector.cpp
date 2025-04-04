@@ -13,9 +13,9 @@ public:
     // constructor without initialization
     NoInit() noexcept = default;
     // implicit conversion T → no_init<T>
-    constexpr NoInit(T value) noexcept : m_v{value} {}
+    constexpr explicit NoInit(T value) noexcept : m_v{value} {}
     // implicit conversion no_init<T> → T
-    constexpr operator T() const noexcept
+    constexpr explicit operator T() const noexcept
     {
         return m_v;
     }
@@ -33,8 +33,8 @@ int main()
         std::vector<NoInit<int>> noInitVec;
         noInitVec.reserve(NUMBER_OF_ELEMENTS);  // fast - no init!
         noInitVec[1024] = 47;
-        int j = noInitVec[1024];
-        noInitVec.push_back(23);
+        int const j = noInitVec[1024];
+        noInitVec.emplace_back(23);
     }
     auto end = std::chrono::system_clock::now();
 
