@@ -1,53 +1,54 @@
-#include <iostream>
+#include <iterator>
 
-template<typename T>
+template <typename T>
 class RangeIterator
 {
 public:
     // Type that iterator refers to
-    using value_type = T;
+    using t_ValueType = T;
     // Pointer
-    using pointer = T*;
+    using t_Pointer = T*;
     // Reference
-    using reference = T*;
+    using t_Reference = T*;
 
     // Tag Indicates the iterator's capabilities
-    using iterator_category = std::input_iterator_tag;
+    using t_IteratorCategory = std::input_iterator_tag;
 
     // Type of difference between two iterators.
-    using difference_type = int;
+    using t_DifferenceType = int;
 
-    RangeIterator(T value)
-        : m_step(0), m_value(value)
-    { }
+    explicit RangeIterator(T value) : mStep(0), m_value(value) {}
 
-    RangeIterator(T value, T step)
-        : m_step(step), m_value(value)
-    { }
+    RangeIterator(T value, T step) : mStep(step), m_value(value) {}
 
     // Dereference operator:
-    value_type& operator*() {
+    t_ValueType& operator*()
+    {
         return m_value;
     }
 
     // Dereference operator:
-    const value_type&  operator*() const  {
+    const t_ValueType& operator*() const
+    {
         return m_value;
     }
 
-    value_type* operator->() {
+    t_ValueType* operator->()
+    {
         return &m_value;
     }
 
     // Prefix increment operator
-    RangeIterator& operator++() {
-        m_value += m_step;
+    RangeIterator& operator++()
+    {
+        m_value += mStep;
         return *this;
     }
 
     // Postfix increment operator
-    RangeIterator& operator++(int) {
-        m_value += m_step;
+    RangeIterator& operator++(int)
+    {
+        m_value += mStep;
         return *this;
     }
 
@@ -62,6 +63,6 @@ public:
     }
 
 private:
-    T const m_step;
-    T  m_value;
+    T const mStep;
+    T m_value;
 };

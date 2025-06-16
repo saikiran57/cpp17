@@ -1,33 +1,43 @@
-#include <type_traits> // std::is_fundamental
-#include <vector>
-#include <iostream>
 #include <chrono>
+#include <cstddef>
+#include <iostream>
+#include <type_traits>  // std::is_fundamental
+#include <vector>
 
-template <typename T> class no_init {
-  static_assert(std::is_fundamental<T>::value, "should be a fundamental type");
+template <typename T>
+class NoInit
+{
+    static_assert(std::is_fundamental_v<T>, "should be a fundamental type");
 
 public:
-  // constructor without initialization
-  no_init() noexcept {}
-  // implicit conversion T → no_init<T>
-  constexpr no_init(T value) noexcept : v_{value} {}
-  // implicit conversion no_init<T> → T
-  constexpr operator T() const noexcept { return v_; }
+    // constructor without initialization
+    NoInit() noexcept = default;
+    // implicit conversion T → no_init<T>
+    constexpr explicit NoInit(T value) noexcept : m_v{value} {}
+    // implicit conversion no_init<T> → T
+    constexpr explicit operator T() const noexcept
+    {
+        return m_v;
+    }
 
 private:
-  T v_;
+    T m_v;
 };
 
-int main() {
-  auto begin = std::chrono::system_clock::now();
-  {
-  std::vector<no_init<int>> v;
-  v.resize(2'000'000'000); // fast - no init!
-  v[1024] = 47;
-  int j = v[1024];
-  v.push_back(23);
-  }
-  auto end = std::chrono::system_clock::now();
+static constexpr size_t NUMBER_OF_ELEMENTS = 2'000'000'000;
 
-  std::cout << "duration ms: " << std::chrono::duration_cast<std::chrono::milliseconds>(end-begin).count() << "\n";
+int main()
+{
+    auto begin = std::chrono::system_clock::now();
+    {
+        std::vector<NoInit<int>> noInitVec;
+        noInitVec.reserve(NUMBER_OF_ELEMENTS);  // fast - no init!
+        noInitVec[1024] = 47;
+        int const j = noInitVec[1024];
+        noInitVec.emplace_back(23);
+    }
+    auto end = std::chrono::system_clock::now();
+
+    std::cout << "duration in seconds: " << std::chrono::duration_cast<std::chrono::seconds>(end - begin).count()
+              << "\n";
 }

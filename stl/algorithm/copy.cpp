@@ -1,23 +1,24 @@
 /**
  * @file copy.cpp
  * @author Saikiran Nadipilli
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2024-06-21
- * 
+ *
  * @copyright Copyright (c) 2024
- * 
+ *
  */
 
-#include <iostream>
-#include <vector>
 #include <algorithm>
+#include <iostream>
 #include <iterator>
+#include <string_view>
+#include <vector>
 
-void print(const std::string_view sv, std::vector<int> list)
+static void print(const std::string_view sv, std::vector<int> list)
 {
-    std::cout << sv << ": "; 
-    for(auto l : list)
+    std::cout << sv << ": ";
+    for (auto l : list)
     {
         std::cout << l << " ";
     }
@@ -25,12 +26,12 @@ void print(const std::string_view sv, std::vector<int> list)
     std::cout << "\n";
 }
 
-void testFunc()
+static void testFunc()
 {
-    std::vector<int> v{1,2,0,-1,-2};
+    std::vector<int> v{1, 2, 0, -1, -2};
     std::vector<int> v2;
     // standard copy
-    std::copy(v.begin(), v.end(), std::back_inserter(v2));
+    std::ranges::copy(v, , std::back_inserter(v2));
     print("standard copy", v2);
 
     // copy_n
@@ -40,9 +41,8 @@ void testFunc()
 
     // copy_if
     std::vector<int> v3;
-    std::copy_if(v.begin(), v.end(), std::back_inserter(v3), [](int x){
-        if (x%2 == 0) return true;
-        return false;
+    std::ranges::copy_if(v, , std::back_inserter(v3), [](int x) {
+        return x % 2 == 0;
     });
 
     print("copy if", v3);
@@ -50,11 +50,11 @@ void testFunc()
     // copy_backward
     v3.clear();
     v3.assign(10, -1);
-    std::copy_backward(v.begin(), v.end(), v3.end());
+    std::ranges::copy_backward(v, , v3.end());
     print("copy backward", v3);
 
-    //copy print
-    std::copy(v3.begin(), v3.end(), std::ostream_iterator<int>(std::cout, ", "));
+    // copy print
+    std::ranges::copy(v3, , std::ostream_iterator<int>(std::cout, ", "));
 }
 
 int main()

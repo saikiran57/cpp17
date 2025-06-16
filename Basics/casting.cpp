@@ -1,16 +1,20 @@
-#include <iostream>
 
-class Book {
+class Book
+{
 public:
-  Book(int a) : val(a) {}
-  constexpr auto len() const { return val; }
+    explicit Book(int a) : m_val(a) {}
+    [[nodiscard]] constexpr auto len() const
+    {
+        return m_val;
+    }
 
 private:
-  int val;
+    int m_val;
 };
 
-int main() {
-  Book b(10);
+int main()
+{
+    Book const b(10);
 
-  return 0;
+    return 0;
 }
