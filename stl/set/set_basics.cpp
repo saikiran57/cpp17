@@ -1,6 +1,6 @@
 /**
  * @file set_basics.cpp
- * @author Saikiran Nadipilli (saikiran.n@arringo.com)
+ * @author Saikiran Nadipilli
  * @brief
  * @version 0.1
  * @date 2025-03-23

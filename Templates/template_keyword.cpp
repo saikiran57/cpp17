@@ -74,6 +74,43 @@ static void func()
     Foo<T>::template sbar<float>();
 }
 
+// Typename Keyword
+
+template <typename T>
+struct type_or_value;
+
+template <>
+struct type_or_value<int>
+{
+    static constexpr bool tv = true;
+};
+
+template <>
+struct type_or_value<float>
+{
+    using tv = float;
+};
+
+template <typename T>
+struct foo
+{
+};
+
+template <typename T>
+void funcType()
+{
+    bool v = type_or_value<T>::tv;
+
+    /**
+     * When the compiler parses code like this involving a dependent type,
+     * in this case, type_or_value<T> it cannot know whether the member tv resolves to a type or a non-type and assumes
+     * the latter. In order to instruct the compiler that tv is, in fact, resolves to a type it is necessary to add the
+     * typename keyword immediately before the expression:
+     *
+     */
+    foo<typename type_or_value<T>::tv> f;
+}
+
 int main()
 {
     Foo<int> fooObj;
@@ -87,6 +124,8 @@ int main()
     Foobar<int> fooBarObj;
 
     fooBarObj.template bar<float>();
+
+    funcType<float>();
 
     return 0;
 }
