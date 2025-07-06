@@ -34,12 +34,12 @@ struct Good
     {
         std::cout << "Non-throwing move constructor called\n";
     }
-    Good(const Good&) noexcept  // will NOT throw
+    Good(const Good&)  // will NOT throw
     {
         std::cout << "Non-throwing copy constructor called\n";
     }
 
-    Good& operator=(const Good&) noexcept  // will NOT throw
+    Good& operator=(const Good&)  // will NOT throw
     {
         std::cout << "Throwing copy assignment called\n";
         return *this;
