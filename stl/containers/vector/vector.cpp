@@ -76,6 +76,7 @@ public:
 
 private:
     std::string s;
+    int* str = nullptr;
 };
 
 template <typename T>
@@ -182,11 +183,32 @@ void insert_construct_elements_in_place()
     }
 }
 
+void element_access()
+{
+    // access last element
+    std::vector<int> vec{1, 2, 3};
+    std::cout << "last element of vec:" << vec.back() << "\n";
+
+    // modify last element
+    vec.back() = 5;
+    std::cout << "last element of after modification vec:" << vec.back() << "\n";
+
+    // access empty vector element
+    std::vector<int> vec1;
+    if (!vec1.empty())
+    {
+        std::cout << "last element of empty vec:" << vec1.back() << "\n";
+    }
+}
+
 int main()
 {
+    static_assert(std::is_nothrow_move_assignable_v<A>);
     construct_vector();
 
     insert_construct_elements_in_place();
+
+    element_access();
 
     return 0;
 }
