@@ -1,13 +1,30 @@
 # Ignore Everything
 *
 
-# But not .cpp
+# But not source files
 !*.cpp
 !*.h
 !*.hpp
-# Or directories
+
+# Directories
 !*/
+
+# Configuration and docs
 !.gitignore
 !README.md
 !.pre-commit-config.yaml
+
+# Scripts
 !format_all_cpp_files.sh
+
+# Build output
+build/
+.cmake_build/
+*.o
+*.a
+*.so
+*.out
+
+# IDE
+.vscode/
+.vs/
