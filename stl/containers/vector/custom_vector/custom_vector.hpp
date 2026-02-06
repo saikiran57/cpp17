@@ -7,6 +7,9 @@
  *
  * @copyright Copyright (c) 2025
  *
+ * @ref https://github.com/sigerror/fast-vector/tree/master
+ *
+ *
  */
 
 /**
@@ -24,16 +27,15 @@
  * @brief DEFAULT VECTOR CAPACITY
  *
  */
-static constexpr int DEFAULT_VECTOR_CAPACITY = 1;
+static constexpr int DEFAULT_VECTOR_CAPACITY = 0;
 
 template <typename T>
 class custom_vector
 {
+    using size_type = std::size_t;
+
 public:
-    custom_vector()
-    {
-        allocate(m_capacity);
-    }
+    custom_vector() = default;
 
     ~custom_vector() noexcept
     {
@@ -124,7 +126,23 @@ public:
             reallocate();
         }
 
+        if (m_size == 0)
+        {
+            m_array = new T[]
+        }
+
         m_array[m_size++] = std::forward<T>(element);
+    }
+
+    template <typename... Args>
+    void emplace_back(Args&&... args)
+    {
+        if (m_size * 2 == m_capacity)
+        {
+            reallocate();
+        }
+
+        m_array[m_size++] = T(std::forward<Args>(args)...);
     }
 
     void pop_back()
@@ -142,6 +160,13 @@ public:
     void allocate(std::uint32_t capacity)
     {
         m_array = new T[capacity];
+    }
+
+    void reserve(size_type size)
+    {
+        m_array = new T[size];
+        m_size = size;
+        m_capacity = size;
     }
 
     void reallocate()
@@ -205,14 +230,19 @@ public:
         return m_array[index];
     }
 
-    int size() const
+    constexpr size_type size() const
     {
         return m_size;
+    }
+
+    size_type capacity() const
+    {
+        return m_capacity;
     }
 
 private:
     T* m_array;
     std::uint32_t m_size = 0;
-    std::uint32_t m_growthFactor = 2;
-    std::uint32_t m_capacity = DEFAULT_VECTOR_CAPACITY;
+    size_type m_growthFactor = 2;
+    size_type m_capacity = DEFAULT_VECTOR_CAPACITY;
 };
