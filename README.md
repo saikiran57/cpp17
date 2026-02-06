@@ -145,6 +145,8 @@ More info:
 - [C++ STL Powerful Guide](https://leetcode.com/discuss/study-guide/4056690/C%2B%2B-STL-POWERFUL-GUIDE)
 - C++17 Standard Reference
 - Modern C++ Best Practices
+- [Hacking C++](https://hackingcpp.com/)
+- [StudyPlan.Dev](https://www.studyplan.dev/pro-cpp)
 
 ## License
 
