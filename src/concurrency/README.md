@@ -7,13 +7,11 @@ This directory contains comprehensive examples of multi-threaded programming in 
 ### Core Threading
 
 - **basic.cpp** - Basic thread creation and management
-
   - Creating threads with functions and lambdas
   - Thread joining and detaching
   - Thread identifiers and attributes
 
 - **simple_threads.cpp** - Simple thread examples
-
   - Multiple thread coordination
   - Basic thread lifecycle
   - Thread groups
@@ -26,7 +24,6 @@ This directory contains comprehensive examples of multi-threaded programming in 
 ### Synchronization Primitives
 
 - **simple_unique_lock.cpp** - Lock wrapper example
-
   - RAII lock management
   - Automatic lock cleanup
   - Exception-safe locking
