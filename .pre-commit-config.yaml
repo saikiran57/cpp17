@@ -39,6 +39,17 @@ repos:
     rev: v2.4.3
     hooks:
       - id: codespell
+  - repo: https://github.com/ahmet-enes-demir/pre-commit-filename-linter.git
+    rev: v1.4.0
+    hooks:
+      - id: check-file-names
+        args: ["--config", ".naming-convention.yaml"]
+      - id: check-directory-names
+        args: ["--config", ".naming-convention.yaml"]
+      - id: check-empty-files
+        args: ["--config", ".naming-convention.yaml"]
+      - id: check-duplicate-files
+        args: ["--config", ".naming-convention.yaml"]
 
   # - repo: local
   #   hooks:
