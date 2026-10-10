@@ -30,6 +30,11 @@ repos:
       - id: prettier
         files: \.(js|ts|jsx|tsx|css|less|html|json|markdown|md|yaml|yml)$
 
+  - repo: https://github.com/crate-ci/typos
+    rev: v1.51.1 # Use the latest available tag
+    hooks:
+      - id: typos
+
   - repo: https://github.com/codespell-project/codespell
     rev: v2.4.3
     hooks:
