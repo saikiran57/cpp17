@@ -1,5 +1,5 @@
 /**
- * @file Widges.cpp
+ * @file Widgets.cpp
  * @author Saikiran Nadipilli
  * @brief
  * @version 0.1

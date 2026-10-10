@@ -29,7 +29,7 @@ This directory contains comprehensive examples of C++ template metaprogramming, 
   - Type list algorithms
   - Variadic templates
 
-- **widges.cpp** - Widget-based template examples
+- **widgets.cpp** - Widget-based template examples
   - Generic widget patterns
   - Template specialization
 

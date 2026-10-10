@@ -19,15 +19,15 @@ static void print(std::vector<uint8_t> data)
 int main()
 {
     std::vector<uint8_t> const data{0x2a, 0xff, 0x30};
-    ByteArray ba(data);
+    ByteArray by(data);
 
-    ba.append(data);
+    by.append(data);
 
-    std::cout << "address:" << ba.to_string() << "\n";
+    std::cout << "address:" << by.to_string() << "\n";
 
     ByteArray const b1("aabbccdd");
 
     std::cout << "address:" << b1.to_string() << "\n";
 
-    print(ba.data());
+    print(by.data());
 }
