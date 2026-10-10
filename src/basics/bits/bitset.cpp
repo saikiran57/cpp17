@@ -75,7 +75,7 @@ int main()
     for (std::size_t i = 1; i < b.size(); i += 2)
         b.set(i);
 
-    std::bitset<8> sufix(124);  // 01111100
+    std::bitset<8> suffix(124);  // 01111100
 
     int limit = 4;
     int level = 1;
@@ -98,5 +98,5 @@ int main()
 
     // }
 
-    std::cout << sufix << '\n';
+    std::cout << suffix << '\n';
 }

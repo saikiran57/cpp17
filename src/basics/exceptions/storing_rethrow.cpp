@@ -116,7 +116,7 @@ int main()
         }
         catch (...)
         {
-            std::cerr << "final excption handling\n";
+            std::cerr << "final exception handling\n";
         }
     }
 
